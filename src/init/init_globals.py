@@ -5,8 +5,10 @@ class PATHS:
 	CWD = os.getcwd()
 	ASSETS = 'assets'
 	STORAGE = 'storage'
+	WEBDRIVER_DIR = ASSETS + SEP + 'webdriver'
+	PROXY_TEMPLATE_DIR = ASSETS + SEP + 'proxy_template'
 	LOG_FILE = CWD + SEP + STORAGE + SEP + 'logs'
-	CHROME_DRIVER = CWD + SEP + ASSETS + SEP + 'chromedriver.exe'
+	CHROME_DRIVER = CWD + SEP + WEBDRIVER_DIR + SEP + 'chromedriver.exe'
 	RESOURCES_FILE = CWD + SEP + ASSETS + SEP + 'resources.csv'
 
 class ERRORS:
