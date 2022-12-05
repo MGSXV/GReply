@@ -4,7 +4,7 @@ class Account:
 	def __init__(self):
 		self.email = ""
 		self.password = ""
-		self.proxyIp = ""
+		self.proxyIp = "0.0.0.0"
 		self.proxyPort = -1
 		self.proxyUser = ""
 		self.proxyPassword = ""
