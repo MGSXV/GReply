@@ -10,6 +10,8 @@ class PATHS:
 	LOG_FILE = CWD + SEP + STORAGE + SEP + 'logs'
 	CHROME_DRIVER = CWD + SEP + WEBDRIVER_DIR + SEP + 'chromedriver.exe'
 	RESOURCES_FILE = CWD + SEP + ASSETS + SEP + 'resources.csv'
+	MANIFEST_TEMPLATE_FILE = CWD + SEP + PROXY_TEMPLATE_DIR + SEP + 'manifests.json'
+	SCRIPT_TEMPLATE_FILE = CWD + SEP + PROXY_TEMPLATE_DIR + SEP + 'background.js'
 
 class ERRORS:
 	UNKNOWN_ERROR = -1
