@@ -1,4 +1,4 @@
-from init.packages import re
+import re
 
 class Account:
 	def __init__(self):

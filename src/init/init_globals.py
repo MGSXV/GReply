@@ -1,4 +1,4 @@
-from init.packages import os
+import os
 
 class PATHS:
 	SEP = os.path.sep

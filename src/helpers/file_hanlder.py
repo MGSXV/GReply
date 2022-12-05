@@ -1,5 +1,5 @@
-from init.packages import os
-from init.packages import csv
+import os
+import csv
 
 def check_if_file_exists(file_path: str) -> bool:
 	if not os.path.exists(file_path):
