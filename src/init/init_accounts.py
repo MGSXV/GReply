@@ -52,4 +52,5 @@ def set_accounts_list():
 			print(e)
 			exit(1)
 		i += 1
+	print('Initializing accounts is done!')
 	return accounts
