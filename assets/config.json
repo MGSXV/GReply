@@ -1,0 +1,23 @@
+{
+	"Author": "Soufiane Elkhamlichi",
+	"name": "GReply",
+	"version": "1.0.0",
+	"number_of_threads": 1,
+	"filter":{
+		"accept_from_name":"accept_from_here",
+		"filter_actions":{
+		  "never_send_to_spam":"true",
+		  "always_important":"true",
+		  "categrize_important":"true"
+		}
+	},
+	"config":{
+		"language": "en",
+		"from_alias":"from_alias_here",
+		"conversation_view":"off"
+	},
+	"send":{
+		"max_send_number": -1,
+		"template": "template.html"
+	}
+ }
