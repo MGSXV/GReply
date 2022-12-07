@@ -1,6 +1,6 @@
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
-from init.init_globals import PATHS
+from init.init_globals import PATHS, COLORS
 from modules.Account import Account
 from helpers import file_hanlder
 
@@ -46,5 +46,5 @@ def init_webdriver(account: Account) -> Chrome:
 			return None
 		chrome_options.add_argument(f'--load-extension={PATHS.CWD + PATHS.SEP + extention}')
 	chrome_dirver = Chrome(chrome_options=chrome_options, executable_path=PATHS.CHROME_DRIVER)
-	print('Initializing webdriver is done!')
+	COLORS.success_messgae('Initializing webdriver is done!')
 	return chrome_dirver

@@ -1,6 +1,6 @@
 from helpers import file_hanlder
 from modules.Account import Account
-from init.init_globals import PATHS
+from init.init_globals import PATHS, COLORS
 
 def set_account_info(acc: list) -> Account:
 	account = Account()
@@ -52,5 +52,5 @@ def set_accounts_list():
 			print(e)
 			exit(1)
 		i += 1
-	print('Initializing accounts is done!')
+	COLORS.success_messgae('Initializing accounts is done!')
 	return accounts

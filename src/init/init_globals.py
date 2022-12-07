@@ -1,4 +1,5 @@
 import os
+from colored import fg, attr
 
 class PATHS:
 	SEP = os.path.sep
@@ -12,6 +13,20 @@ class PATHS:
 	RESOURCES_FILE = CWD + SEP + ASSETS + SEP + 'resources.csv'
 	MANIFEST_TEMPLATE_FILE = CWD + SEP + PROXY_TEMPLATE_DIR + SEP + 'manifest.json'
 	SCRIPT_TEMPLATE_FILE = CWD + SEP + PROXY_TEMPLATE_DIR + SEP + 'background.js'
+
+class COLORS:
+	DEFAULT = attr("reset")
+	BOLD = attr("bold")
+	BLACK = fg(0)
+	WHITE = fg(255)
+	GREY = fg(8)
+	RED = fg(1)
+	GREEN = fg(22)
+	YELLOW = fg(226)
+	DODGER_BLUE_2 = fg(27)
+
+	def success_messgae(self, message: str):
+		print(self.GREEN + message + self.DEFAULT)
 
 class ERRORS:
 	UNKNOWN_ERROR = -1
