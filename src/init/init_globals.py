@@ -21,13 +21,19 @@ class COLORS:
 	WHITE = fg(255)
 	GREY = fg(8)
 	RED = fg(1)
-	GREEN = fg(22)
+	GREEN = fg(82)
 	YELLOW = fg(226)
 	DODGER_BLUE_2 = fg(27)
 
-	def success_messgae(self, message: str):
-		print(self.GREEN + message + self.DEFAULT)
+	def success_messgae(message: str):
+		print(COLORS.GREEN + message + COLORS.DEFAULT)
 
+class ACTIONS:
+	ERROR = -1
+	HELP = 0
+	FILTER = 1
+	CONFIG = 2
+	SEND = 4
 class ERRORS:
 	UNKNOWN_ERROR = -1
 	EMAIL_ERROR = 1
