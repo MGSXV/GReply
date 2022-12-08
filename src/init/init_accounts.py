@@ -15,24 +15,29 @@ def set_account_info(acc: list) -> Account:
 		print(e)
 		exit(1)
 	try:
-		account.setProxyIp(acc[2].strip())
+		account.setRecovery(acc[2].strip())
+	except:
+		print(e)
+		exit(1)
+	try:
+		account.setProxyIp(acc[3].strip())
 	except IndexError:
 		return account
 	except Exception as e:
 		print(e)
 		exit(1)
 	try:
-		account.setProxyPort(int(acc[3]))
+		account.setProxyPort(int(acc[4]))
 	except Exception as e:
 		print(e)
 		exit(1)
 	try:
-		account.setProxyUser(acc[4].strip())
+		account.setProxyUser(acc[5].strip())
 	except Exception as e:
 		print(e)
 		exit(1)
 	try:
-		account.setProxyPassword(acc[5].strip())
+		account.setProxyPassword(acc[6].strip())
 	except Exception as e:
 		print(e)
 		exit(1)

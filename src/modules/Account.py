@@ -38,7 +38,7 @@ class Account:
 		else:
 			self.password = password
 	def setRecovery(self, recovery):
-		if recovery == "" or recovery == None:
+		if recovery == None:
 			raise Exception("All emails should be valid!")
 		else:
 			self.recovery = recovery
