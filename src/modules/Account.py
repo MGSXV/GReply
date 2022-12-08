@@ -4,6 +4,7 @@ class Account:
 	def __init__(self):
 		self.email = ""
 		self.password = ""
+		self.recovery = ""
 		self.proxyIp = "0.0.0.0"
 		self.proxyPort = -1
 		self.proxyUser = ""
@@ -14,6 +15,8 @@ class Account:
 		return self.email
 	def getPassword(self):
 		return self.password
+	def getRecovery(self):
+		return self.recovery
 	def getProxyIp(self):
 		return self.proxyIp
 	def getProxyPort(self):
@@ -34,6 +37,11 @@ class Account:
 			raise Exception("Email password is empty!")
 		else:
 			self.password = password
+	def setRecovery(self, recovery):
+		if recovery == "" or recovery == None:
+			raise Exception("All emails should be valid!")
+		else:
+			self.recovery = recovery
 	def setProxyIp(self, proxyIp):
 		if re.fullmatch('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', proxyIp) == None:
 			raise Exception("Proxy must be valid!")
