@@ -61,7 +61,6 @@ def main():
 	if args_res == ACTIONS.ERROR:
 		exit(1)
 	elif args_res == ACTIONS.HELP:
-		print_help()
 		return
 	route.entry_point(args_res)
 
