@@ -22,6 +22,11 @@ def wait_for_element_by_xpath(browser: Chrome, timeout: int, xpath: str):
 		EC.presence_of_element_located((By.XPATH, xpath))
 		)
 
+def wait_for_element_by_css_selector(browser: Chrome, timeout: int, selector: str):
+	WebDriverWait(browser, timeout).until(
+		EC.presence_of_element_located((By.CSS_SELECTOR, selector))
+		)
+
 def rand_num_in_range(min, max):
 	return random.uniform(min, max)
 
