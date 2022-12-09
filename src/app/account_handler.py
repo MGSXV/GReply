@@ -16,13 +16,14 @@ def is_logged_in(email: str, browser: Chrome, timeout: int) -> bool:
 		return False
 
 def login(email: str, password: str, browser: Chrome, timeout: int):
+	browser.get('https://accounts.google.com/')
 	try:
 		browser_handler.wait_for_element_by_id(browser, timeout, 'identifierId')
 		element = browser.find_element(By.ID, 'identifierId')
 		browser_handler.simulate_human_typing(email, element)
 		browser_handler.wait_for_element_by_xpath(browser, timeout, '//*[@id="identifierNext"]/div/button')
-		browser_handler.wait_time_in_range(1.5, 3,5)
 		element = browser.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button')
+		browser_handler.wait_time_in_range(2.5, 3.5)
 		element.click()
 	except:
 		print('Error type email!')
@@ -31,8 +32,8 @@ def login(email: str, password: str, browser: Chrome, timeout: int):
 		element = browser.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input')
 		browser_handler.simulate_human_typing(password, element)
 		browser_handler.wait_for_element_by_xpath(browser, timeout, '//*[@id="passwordNext"]/div/button')
-		browser_handler.wait_time_in_range(1.5, 3,5)
-		browser.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button')
+		element = browser.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button')
+		browser_handler.wait_time_in_range(1.5, 3.5)
 		element.click()
 	except:
 		pass
