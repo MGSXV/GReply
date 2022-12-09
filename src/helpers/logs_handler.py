@@ -1,6 +1,6 @@
 from datetime import date, datetime
 from helpers import file_hanlder
-from init.init_globals import PATHS
+from init.init_globals import PATHS, ERRORS
 
 class Logger():
 	EMAIL_ERROR = 1
@@ -20,17 +20,17 @@ class Logger():
 
 	def logger(level: int, email: str):
 		line = '[' + Logger.get_time_stamp() + '] '
-		if level == globals.EMAIL_ERROR:
+		if level == ERRORS.EMAIL_ERROR:
 			line += 'EMAIL_ERROR\t\t\t\t: invalid email address: (' + email + ')'
-		elif level == globals.PASS_ERROR:
+		elif level == ERRORS.PASS_ERROR:
 			line += 'PASS_ERROR\t\t\t\t: invalid password: (' + email + ')'
-		elif level == globals.PROXY_ERROR:
+		elif level == ERRORS.PROXY_ERROR:
 			line += 'PROXY_ERROR\t\t\t\t: invalid proxy address: (' + email + ')'
-		elif level == globals.CAPTCHA_ERROR:
+		elif level == ERRORS.CAPTCHA_ERROR:
 			line += 'CAPTCHA_ERROR\t\t\t: Captcha error accured!'
-		elif level == globals.VERIFICATION_ERROR:
+		elif level == ERRORS.VERIFICATION_ERROR:
 			line += 'VERIFICATION_ERROR\t\t: account requires verifcation: (' + email + ')'
-		elif level == globals.BLOCKED_ACC_ERROR:
+		elif level == ERRORS.BLOCKED_ACC_ERROR:
 			line += 'BLOCKED_ACC_ERROR\t\t: account is temporarily blocked: (' + email + ')'
 		else:
 			line += 'Unknown error\t\t\t: (' + email + ')'
