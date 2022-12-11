@@ -27,29 +27,21 @@ def generate_proxy_extension(account: Account):
 		print(e)
 		exit(1)
 
-def init_webdriver(account: Account) -> Chrome:
+def init_webdriver(account: Account, config) -> Chrome:
 	ua = UserAgent()
+	sub_dir = account.getEmail().split('@')[0]
 	userAgent = ua.random
 	chrome_options = ChromeOptions()
 	chrome_options.add_argument("--lang=en-US")
-	# chrome_options.add_argument('--disable-gpu')
-	# chrome_options.add_argument('--disable-infobars')
-	# chrome_options.add_argument('--no-sandbox')
-	# chrome_options.add_argument('--no-first-run')
-	# chrome_options.add_argument('--no-service-autorun')
-	# chrome_options.add_argument('--password-store=basic')
-	# chrome_options.add_argument(f'user-agent={userAgent}')
 	chrome_options.add_argument('--disable-blink-features=AutomationControlled')
 	chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
-	# chrome_options.add_experimental_option("useAutomationExtension", False)
-	# chrome_options.add_experimental_option("excludeSwitches",["enable-automation"])
-	# chrome_options.add_experimental_option("detach", True)
 	chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-	if account.getProxyIp() != '0.0.0.0' or account.getProxyPort() != -1:
-		extention = generate_proxy_extension(account)
-		if extention is None:
-			print('Error while initializing webdriver!')
-			return None
+	if config['proxy'] == 'true':
+		if account.getProxyIp() != '0.0.0.0' or account.getProxyPort() != -1:
+			extention = generate_proxy_extension(account)
+			if extention is None:
+				print('Error while initializing webdriver!')
+				return None
 		chrome_options.add_argument(f'--load-extension={PATHS.CWD + PATHS.SEP + extention}')
 	chrome_dirver = Chrome(options=chrome_options, executable_path=PATHS.CHROME_DRIVER)
 	COLORS.success_messgae('Initializing webdriver is done!')
