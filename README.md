@@ -16,3 +16,7 @@ $ pip install selenium
 ```
 $ pip install colored
 ```
+- selenium-stealth 1.0.6
+```
+$ pip install selenium-stealth
+```
