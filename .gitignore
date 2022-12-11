@@ -131,3 +131,4 @@ dmypy.json
 # Custom
 storage/*/proxy_extension
 storage/*/*.json
+storage/logs
