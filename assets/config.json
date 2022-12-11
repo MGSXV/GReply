@@ -20,5 +20,6 @@
 	"send":{
 		"max_send_number": -1,
 		"template": "template.html"
-	}
+	},
+	"proxy": "false"
 }
