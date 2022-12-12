@@ -36,6 +36,7 @@ class ACTIONS:
 	FILTER = 1
 	CONFIG = 2
 	SEND = 4
+	LOGIN = 5
 class ERRORS:
 	UNKNOWN_ERROR = -1
 	EMAIL_ERROR = 1
