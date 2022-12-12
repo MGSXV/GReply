@@ -12,6 +12,7 @@ import sys
 
 def print_help():
 	print(f"""
+		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--login{COLORS.DEFAULT} : {COLORS.BOLD}Create chrome profiles and login to accounts.{COLORS.DEFAULT}
 		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--filter{COLORS.DEFAULT} : {COLORS.BOLD}Create / Update account's inbox filter.{COLORS.DEFAULT}
 		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--config{COLORS.DEFAULT} : {COLORS.BOLD}Create / Update account's config, including:{COLORS.DEFAULT}
 				{COLORS.DODGER_BLUE_2}+{COLORS.DEFAULT} From alias.
@@ -31,6 +32,8 @@ def get_args() -> int:
 		if sys.argv[1] == '--help':
 			print_help()
 			return ACTIONS.HELP
+		elif sys.argv[1] == '--login':
+			return ACTIONS.LOGIN
 		elif sys.argv[1] == '--filter':
 			print('Starting filter...')
 			return ACTIONS.FILTER
