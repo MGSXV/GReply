@@ -30,6 +30,9 @@ class COLORS:
 	def success_messgae(message: str):
 		print(COLORS.GREEN + message + COLORS.DEFAULT)
 
+	def error_messgae(message: str):
+		print(COLORS.RED + message + COLORS.DEFAULT)
+
 class ACTIONS:
 	ERROR = -1
 	HELP = 0
