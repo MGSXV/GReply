@@ -1,7 +1,7 @@
 import json
 from selenium.webdriver import Chrome
 from helpers import file_hanlder
-from init.init_globals import PATHS
+from init.init_globals import PATHS, COLORS
 
 def save_cookies(path: str, browser: Chrome) -> bool:
 	return file_hanlder.write_file(path + PATHS.SEP + 'cookies.json', json.dumps(browser.get_cookies()), 'w')
@@ -18,9 +18,10 @@ def load_cookies(path: str, browser: Chrome) -> bool:
 	except:
 		print('Cookies file error!')
 	for cookie in cookies:
+		cookie['domain'] = '.google.com'
 		try:
 			browser.add_cookie(cookie)
 		except:
-			pass
+			COLORS.error_messgae('Could not add cookie!')
 	browser.refresh()
 	return True
