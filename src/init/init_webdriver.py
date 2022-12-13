@@ -34,8 +34,8 @@ def init_webdriver(account: Account, config) -> Chrome:
 	chrome_options = ChromeOptions()
 	chrome_options.add_argument("--lang=en-US")
 	chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-	chrome_options.add_argument(f'--user-data-dir={PATHS.CHROME_SYS_PATH}')
-	chrome_options.add_argument(f'--profile-directory={sub_dir}')
+	# chrome_options.add_argument(f'--user-data-dir={PATHS.CHROME_SYS_PATH}')
+	# chrome_options.add_argument(f'--profile-directory={sub_dir}')
 	chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
 	chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
 	if config['proxy'] == 'true':
