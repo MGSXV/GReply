@@ -2,7 +2,7 @@ from helpers import file_hanlder, cookies_handler, browser_handler
 from init import init_accounts, init_webdriver
 from init.init_globals import PATHS, ACTIONS
 from modules.Account import Account
-from app import account_handler, account_config_handler
+from app import account_handler, account_config_handler, account_filter_handler
 import json
 import time
 import threading
@@ -26,7 +26,7 @@ def route(account: Account, action: int, config):
 			account_config_handler.general_settings(browser, config['timeout'])
 			account_config_handler.account_settings(browser, config['timeout'], config['config']['from_alias'])
 		elif action == ACTIONS.FILTER:
-			print('filter...')
+			account_filter_handler.filter_handler(browser, config['timeout'], config['filter']['accept_from_name'])
 		elif action == ACTIONS.SEND:
 			print('send...')
 		elif action == ACTIONS.CONFIG + ACTIONS.FILTER:
