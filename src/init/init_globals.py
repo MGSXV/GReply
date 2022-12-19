@@ -13,6 +13,7 @@ class PATHS:
 	RESOURCES_FILE = CWD + SEP + ASSETS + SEP + 'resources.csv'
 	MANIFEST_TEMPLATE_FILE = CWD + SEP + PROXY_TEMPLATE_DIR + SEP + 'manifest.json'
 	SCRIPT_TEMPLATE_FILE = CWD + SEP + PROXY_TEMPLATE_DIR + SEP + 'background.js'
+	CREATIVE = ASSETS + SEP + 'template.html'
 	USERNAME= os.getenv('username')
 	CHROME_SYS_PATH = f'C:\\Users\\{USERNAME}\\AppData\\Local\\Google\\Chrome\\User Data'
 
