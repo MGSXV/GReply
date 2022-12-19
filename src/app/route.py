@@ -32,7 +32,7 @@ def route(account: Account, action: int, config):
 		elif action == ACTIONS.CONFIG + ACTIONS.FILTER:
 			account_config_handler.general_settings(browser, config['timeout'])
 			account_config_handler.account_settings(browser, config['timeout'], config['config']['from_alias'])
-			print('config filter...')
+			account_filter_handler.filter_handler(browser, config['timeout'], config['filter']['accept_from_name'])
 		else:
 			print('unknown action')
 			return
