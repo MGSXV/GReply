@@ -5,7 +5,7 @@
 	"number_of_threads": 1,
 	"timeout": 30,
 	"filter":{
-		"accept_from_name":"accept_from_here",
+		"accept_from_name":"soufiane elkhamlichi",
 		"filter_actions":{
 		  "never_send_to_spam":"true",
 		  "always_important":"true",
@@ -14,12 +14,13 @@
 	},
 	"config":{
 		"language": "en",
-		"from_alias":"from_alias_here",
+		"from_alias":"flra",
 		"conversation_view":"off"
 	},
 	"send":{
-		"max_send_number": -1,
+		"max_send_number": 1,
+		"send_date": "21-12-2022",
 		"template": "template.html"
 	},
-	"proxy": "false"
+	"proxy": "true"
 }
