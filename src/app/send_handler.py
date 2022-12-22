@@ -27,10 +27,12 @@ def locate_email(browser: Chrome, timeout: int, accepted_from: str, xpath: str) 
 	try:
 		browser_handler.wait_for_element_by_xpath(browser, timeout, xpath)
 		element = browser.find_element(By.XPATH, xpath)
+		subj_xpath = xpath.rstrip('td[4]') + '/td[5]/div/div'
 		if accepted_from.lower() in element.text.lower():
+			element = browser.find_element(By.XPATH, subj_xpath)
 			return element
 		return None
-	except:
+	except Exception as e:
 		return None
 
 def get_creative(browser: Chrome, timeout: int):
@@ -84,7 +86,7 @@ def get_send_date(browser: Chrome, timeout: int, xpath: str):
 		print(e)
 
 def is_old_mail(date1: str, date2: datetime.date):
-	return datetime.strptime(date1, '%Y-%m-%d').date() >= date2
+	return datetime.strptime(date1, '%Y-%m-%d').date() <= date2
 
 def back_to_inbox(browser: Chrome, timeout: int):
 	try:
@@ -105,15 +107,20 @@ def get_older_mails(browser: Chrome, timeout: int) -> int:
 	except:
 		return -1
 
+def wait_for_new_page(browser: Chrome, acc_info, timeout: int):
+	new_acc_info = get_number_of_emails(browser, timeout)
+	while new_acc_info == acc_info:
+		browser_handler.wait_time_in_range(1.0, 2.0)
+		new_acc_info = get_number_of_emails(browser, timeout)
+
 def send_proccess(browser: Chrome, timeout: int, accepted_from: str, email: str, config):
 	acc_info = get_number_of_emails(browser, timeout)
 	tbody_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div[8]/div/div[1]/div[2]/div/table/tbody'
 	try:
 		browser_handler.wait_for_element_by_xpath(browser, timeout, tbody_xpath)
-		tbody = browser.find_element(By.XPATH, tbody_xpath)
 		i = 0
 		while (i:=i+1):
-			if i > config['max_send_number']:
+			if i > acc_info['total']:
 				break
 			j = 0
 			while (j:=j+1):
@@ -136,6 +143,8 @@ def send_proccess(browser: Chrome, timeout: int, accepted_from: str, email: str,
 			elif res == -1:
 				Logger.logger(ERRORS.PROXY_ERROR, email)
 				return
-			# browser_handler.wait_time_in_range(200.1, 200.2)
+			acc_info2 = get_number_of_emails(browser, timeout)
+			wait_for_new_page(browser, acc_info2, timeout)
+			i = i + acc_info['epp'] - 1
 	except Exception as e:
 		print(e)
