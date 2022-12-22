@@ -69,12 +69,17 @@ def login(email: str, password: str, recovery: str, browser: Chrome, timeout: in
 		return False
 	res = requires_verification(browser, timeout)
 	if res == 1:
+		Logger.logger(ERRORS.VERIFICATION_ERROR, email)
+		return False
 		pass #TODO: USe verifcation email
 	elif res == 0:
 		Logger.logger(Logger.VERIFICATION_ERROR, email)
 		return False
 	elif res == ERRORS.BLOCKED_ACC_ERROR:
 		Logger.logger(res, email)
+		return False
+	elif res == -1:
+		Logger.logger(ERRORS.VERIFICATION_ERROR, email)
 		return False
 	browser_handler.wait_time_in_range(2.5, 4.5)
 	browser.get('https://mail.google.com/')
@@ -85,5 +90,7 @@ def login(email: str, password: str, recovery: str, browser: Chrome, timeout: in
 		browser.get('https://mail.google.com/')
 		browser_handler.wait_time_in_range(2.5, 4.5)
 		cookies_handler.save_cookies(PATHS.STORAGE + PATHS.SEP + email.split('@')[0], browser)
-	return res
+		return True
+	Logger.logger(ERRORS.VERIFICATION_ERROR, email)
+	return False
 	
