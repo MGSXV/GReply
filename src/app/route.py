@@ -58,7 +58,7 @@ def entry_point(action: int):
 	# 	time.sleep(1)
 	# 	for tt in threads:
 	# 		tt.join()
-	route(accs[0], action, config)
-	# for acc in accs:
-	# 	route(acc, action, config)
+	# route(accs[0], action, config)
+	for acc in accs:
+		route(acc, action, config)
 	pass
