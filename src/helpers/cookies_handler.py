@@ -22,6 +22,6 @@ def load_cookies(path: str, browser: Chrome) -> bool:
 		try:
 			browser.add_cookie(cookie)
 		except:
-			COLORS.error_messgae('Could not add cookie!')
+			pass
 	browser.refresh()
 	return True
