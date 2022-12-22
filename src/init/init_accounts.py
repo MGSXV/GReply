@@ -57,5 +57,5 @@ def set_accounts_list():
 			print(e)
 			exit(1)
 		i += 1
-	COLORS.success_messgae('Initializing accounts is done!')
+	# COLORS.success_messgae('Initializing accounts is done!')
 	return accounts

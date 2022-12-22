@@ -46,5 +46,5 @@ def init_webdriver(account: Account, config) -> Chrome:
 				return None
 		chrome_options.add_argument(f'--load-extension={PATHS.CWD + PATHS.SEP + extention}')
 	chrome_dirver = Chrome(options=chrome_options, executable_path=PATHS.CHROME_DRIVER)
-	COLORS.success_messgae('Initializing webdriver is done!')
+	# COLORS.success_messgae('Initializing webdriver is done!')
 	return chrome_dirver

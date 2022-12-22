@@ -35,21 +35,16 @@ def get_args() -> int:
 		elif sys.argv[1] == '--login':
 			return ACTIONS.LOGIN
 		elif sys.argv[1] == '--filter':
-			print('Starting filter...')
 			return ACTIONS.FILTER
 		elif sys.argv[1] == '--config':
-			print('Starting config...')
 			return ACTIONS.CONFIG
 		elif sys.argv[1] == '--send':
-			print('Starting sending proccess...')
 			return ACTIONS.SEND
 		else:
 			args_error()
 			return ACTIONS.ERROR
 	elif argc == 3:
 		if '--filter' in sys.argv and '--config' in sys.argv:
-			print('Starting filter...')
-			print('Starting config...')
 			return ACTIONS.FILTER + ACTIONS.CONFIG
 		else:
 			args_error()
