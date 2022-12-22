@@ -3,9 +3,10 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from helpers import browser_handler, file_hanlder
-import pyperclip as pc
-from init.init_globals import PATHS
+from datetime import datetime
+from helpers import browser_handler
+from init.init_globals import PATHS, ERRORS
+from helpers.logs_handler import Logger
 
 def get_number_of_emails(browser: Chrome, timeout: int):
 	xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[1]/div/div[1]/div[2]/div[1]/span/div[1]/span'
@@ -25,9 +26,8 @@ def get_number_of_emails(browser: Chrome, timeout: int):
 def locate_email(browser: Chrome, timeout: int, accepted_from: str, xpath: str) -> WebElement or None:
 	try:
 		browser_handler.wait_for_element_by_xpath(browser, timeout, xpath)
-		xpath = f'{xpath}/html/body/div[7]/div[3]/div/div[1]/div[3]/header/div[2]/div[1]/div[4]/div/a'
 		element = browser.find_element(By.XPATH, xpath)
-		if element.text.lower() == accepted_from.lower():
+		if accepted_from.lower() in element.text.lower():
 			return element
 		return None
 	except:
@@ -56,9 +56,7 @@ def get_creative(browser: Chrome, timeout: int):
 	browser_handler.wait_time_in_range(0.5, 0.9)
 	ActionChains(browser).key_down(Keys.CONTROL).send_keys(Keys.ENTER).key_up(Keys.CONTROL).perform()
 
-
-
-def send_reply(browser: Chrome, timeout: int, accepted_from: str):
+def send_reply(browser: Chrome, timeout: int):
 	xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div[2]/div/table/tr/td/div[2]/div[2]/div/div[3]/div/div/div/div/div/div[1]/div[2]/div[1]/table/tbody/tr[1]/td[4]/div[1]'
 	try:
 		browser_handler.wait_for_element_by_xpath(browser, timeout, xpath)
@@ -66,14 +64,48 @@ def send_reply(browser: Chrome, timeout: int, accepted_from: str):
 		element.click()
 		browser_handler.wait_time_in_range(1.1, 1.5)
 		get_creative(browser, timeout)
-
-		# script = f"var ele=arguments[0]; ele.innerHTML = '{file_hanlder.read_file_content(PATHS.CREATIVE)}';"
-		# print(script)
-		# browser.execute_script(script, element)
 	except Exception as e:
 		print(e)
 
-def send_proccess(browser: Chrome, timeout: int, accepted_from: str, config):
+def get_send_date(browser: Chrome, timeout: int, xpath: str):
+	try:
+		browser_handler.wait_for_element_by_xpath(browser, timeout, xpath)
+		element = browser.find_element(By.XPATH, xpath)
+		email_date = element.get_attribute('aria-label')
+		date_compounents = email_date.split(', ')
+		day_parse = date_compounents[1].split(' ')
+		if len(day_parse[1]) == 1:
+			day_parse[1] = '0' + day_parse[1]
+		date_compounents[1] = day_parse[0] + ' ' + day_parse[1]
+		_date = f'{date_compounents[0]} {date_compounents[1]} {date_compounents[2]}'
+		dt = datetime.strptime(_date, '%a %b %d %Y')
+		return dt.date()
+	except Exception as e:
+		print(e)
+
+def is_old_mail(date1: str, date2: datetime.date):
+	return datetime.strptime(date1, '%Y-%m-%d').date() >= date2
+
+def back_to_inbox(browser: Chrome, timeout: int):
+	try:
+		browser_handler.wait_for_element_by_xpath(browser, timeout, '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div')
+		element = browser.find_element(By.XPATH, '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[1]/div[2]/div[1]/div/div[1]/div')
+		element.click()
+	except:
+		browser.get('https://mail.google.com/mail/u/0/#inbox')
+
+def get_older_mails(browser: Chrome, timeout: int) -> int:
+	try:
+		browser_handler.wait_for_element_by_xpath(browser, timeout, '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[1]/div/div[1]/div[2]/div[1]/span/div[3]')
+		element = browser.find_element(By.XPATH, '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[1]/div/div[1]/div[2]/div[1]/span/div[3]')
+		if not element.get_property('disabled'):
+			element.click()
+			return 1
+		return 0
+	except:
+		return -1
+
+def send_proccess(browser: Chrome, timeout: int, accepted_from: str, email: str, config):
 	acc_info = get_number_of_emails(browser, timeout)
 	tbody_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div[8]/div/div[1]/div[2]/div/table/tbody'
 	try:
@@ -87,10 +119,23 @@ def send_proccess(browser: Chrome, timeout: int, accepted_from: str, config):
 			while (j:=j+1):
 				if j > acc_info['epp']:
 					break
-				element = locate_email(browser, timeout, accepted_from, f'{tbody_xpath}/tr[{j}]')
+				element = locate_email(browser, timeout, accepted_from, f'{tbody_xpath}/tr[{j}]/td[4]')
 				if element is not None:
-					element.click()
-					send_reply(browser, timeout, accepted_from)
-				browser_handler.wait_time_in_range(200.1, 200.2)
+					if is_old_mail(config['send_date'], get_send_date(browser, timeout, f'{tbody_xpath}/tr[{j}]/td[8]/span')):
+						browser_handler.wait_time_in_range(3.4, 5.5)
+						element.click()
+						browser_handler.wait_time_in_range(3.4, 5.5)
+						send_reply(browser, timeout)
+						browser_handler.wait_time_in_range(3.4, 5.5)
+						back_to_inbox(browser, timeout)
+					else:
+						return
+			res = get_older_mails(browser, timeout)
+			if res == 0:
+				return
+			elif res == -1:
+				Logger.logger(ERRORS.PROXY_ERROR, email)
+				return
+			# browser_handler.wait_time_in_range(200.1, 200.2)
 	except Exception as e:
 		print(e)
