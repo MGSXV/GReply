@@ -43,22 +43,22 @@ def entry_point(action: int):
 	accs = init_accounts.set_accounts_list()
 	config_file = file_hanlder.read_file_content(PATHS.ASSETS + PATHS.SEP + 'config.json')
 	config = json.loads(config_file)
-	# threads_num = config['number_of_threads']
-	# accounts_num = len(accs)
-	# threads = []
-	# i = 0
-	# while (i < accounts_num):
-	# 	for j in range(threads_num):
-	# 		if i >= accounts_num:
-	# 			break
-	# 		t = threading.Thread(target=route, args=(accs[i], action, config))
-	# 		t.start()
-	# 		threads.append(t)
-	# 		i+= 1
-	# 	time.sleep(1)
-	# 	for tt in threads:
-	# 		tt.join()
+	threads_num = config['number_of_threads']
+	accounts_num = len(accs)
+	threads = []
+	i = 0
+	while (i < accounts_num):
+		for j in range(threads_num):
+			if i >= accounts_num:
+				break
+			t = threading.Thread(target=route, args=(accs[i], action, config))
+			t.start()
+			threads.append(t)
+			i+= 1
+		time.sleep(1)
+		for tt in threads:
+			tt.join()
 	# route(accs[0], action, config)
-	for acc in accs:
-		route(acc, action, config)
+	# for acc in accs:
+	# 	route(acc, action, config)
 	pass
