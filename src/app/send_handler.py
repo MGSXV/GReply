@@ -16,9 +16,9 @@ def get_number_of_emails(browser: Chrome, timeout: int):
 		element = browser.find_element(By.XPATH, xpath)
 		num = element.text
 		_num = num.split('of')
-		acc_info['total'] = int(_num[1].strip())
-		acc_info['epp'] = int(_num[0].split('–')[1].strip())
-		acc_info['page'] = int(_num[0].split('–')[0].strip())
+		acc_info['total'] = int(_num[1].strip().replace(',', ''))
+		acc_info['epp'] = int(_num[0].split('–')[1].strip().replace(',', ''))
+		acc_info['page'] = int(_num[0].split('–')[0].strip().replace(',', ''))
 	except Exception as e:
 		print(e)
 	return acc_info
@@ -50,9 +50,6 @@ def get_creative(browser: Chrome, timeout: int):
 	browser.execute_script('window.close()')
 	browser.switch_to.window(browser.window_handles[0])
 	element.click()
-	action.key_down(Keys.CONTROL).send_keys('a').key_up(Keys.CONTROL).perform()
-	browser_handler.wait_time_in_range(0.5, 0.9)
-	action.send_keys(Keys.DELETE).perform()
 	browser_handler.wait_time_in_range(0.5, 0.9)
 	action.key_down(Keys.CONTROL).send_keys('v').key_up(Keys.CONTROL).perform()
 	browser_handler.wait_time_in_range(0.5, 0.9)
