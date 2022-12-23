@@ -12,7 +12,6 @@ def lang_handler(browser: Chrome, timeout: int):
 		browser_handler.wait_time_in_range(2.0, 4.0)
 		if 'English (US)' != selected.text:
 			dropdown.select_by_value('en')
-			print('language done...')
 	except:
 		pass
 
