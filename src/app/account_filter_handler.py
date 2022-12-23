@@ -76,6 +76,7 @@ def filter_handler(browser: Chrome, timeout: int, accepted_from: str):
 		browser_handler.wait_for_element_by_xpath(browser, timeout, xpath[0])
 		element = browser.find_element(By.XPATH, xpath[0])
 		element.click()
+		browser_handler.wait_time_in_range(2.0, 3.0)
 	except Exception as e:
 		print(e)
 	
