@@ -120,20 +120,23 @@ def send_proccess(browser: Chrome, timeout: int, accepted_from: str, email: str,
 			if i > acc_info['total']:
 				break
 			j = 0
-			while (j:=j+1):
-				if j > acc_info['epp']:
-					break
-				element = locate_email(browser, timeout, accepted_from, f'{tbody_xpath}/tr[{j}]/td[4]')
-				if element is not None:
-					if is_old_mail(config['send_date'], get_send_date(browser, timeout, f'{tbody_xpath}/tr[{j}]/td[8]/span')):
-						browser_handler.wait_time_in_range(3.4, 5.5)
-						element.click()
-						browser_handler.wait_time_in_range(3.4, 5.5)
-						send_reply(browser, timeout)
-						browser_handler.wait_time_in_range(3.4, 5.5)
-						back_to_inbox(browser, timeout)
-					else:
-						return
+			if is_old_mail(config['send_date'], get_send_date(browser, timeout, f'{tbody_xpath}/tr[1]/td[8]/span')):
+				while (j:=j+1):
+					if j > acc_info['epp']:
+						break
+					element = locate_email(browser, timeout, accepted_from, f'{tbody_xpath}/tr[{j}]/td[4]')
+					if element is not None:
+						if is_old_mail(config['send_date'], get_send_date(browser, timeout, f'{tbody_xpath}/tr[{j}]/td[8]/span')):
+							browser_handler.wait_time_in_range(3.4, 5.5)
+							element.click()
+							browser_handler.wait_time_in_range(3.4, 5.5)
+							send_reply(browser, timeout)
+							browser_handler.wait_time_in_range(3.4, 5.5)
+							back_to_inbox(browser, timeout)
+						else:
+							return
+			else:
+				return
 			res = get_older_mails(browser, timeout)
 			if res == 0:
 				return
