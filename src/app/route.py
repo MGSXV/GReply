@@ -43,10 +43,15 @@ def entry_point(action: int):
 	accs = init_accounts.set_accounts_list()
 	config_file = file_hanlder.read_file_content(PATHS.ASSETS + PATHS.SEP + 'config.json')
 	config = json.loads(config_file)
+	# for acc in accs:
+	# 	route(acc, action, config)
+	route(accs[0], action, config)
+	return
 	threads_num = config['number_of_threads']
 	accounts_num = len(accs)
 	threads = []
 	i = 0
+	thread_handler()
 	while (i < accounts_num):
 		for j in range(threads_num):
 			if i >= accounts_num:
@@ -58,7 +63,3 @@ def entry_point(action: int):
 		time.sleep(1)
 		for tt in threads:
 			tt.join()
-	# route(accs[0], action, config)
-	# for acc in accs:
-	# 	route(acc, action, config)
-	pass
