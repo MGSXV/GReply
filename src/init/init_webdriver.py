@@ -37,7 +37,9 @@ def init_webdriver(account: Account, config) -> Chrome:
 	# chrome_options.add_argument(f'--user-data-dir={PATHS.CHROME_SYS_PATH}')
 	# chrome_options.add_argument(f'--profile-directory={sub_dir}')
 	chrome_options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
-	chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+	chrome_options.add_experimental_option('excludeSwitches', ['enable-logging', 'enable-automation'])
+	chrome_options.add_experimental_option("useAutomationExtension", False)
+	# chrome_options.add_experimental_option("excludeSwitche`s",[""])
 	if config['proxy'] == 'true':
 		if account.getProxyIp() != '0.0.0.0' or account.getProxyPort() != -1:
 			extention = generate_proxy_extension(account)
