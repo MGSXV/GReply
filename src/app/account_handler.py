@@ -1,5 +1,6 @@
 from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
+from modules.Account import Account
 from helpers.logs_handler import Logger
 from helpers import browser_handler, cookies_handler
 from init.init_globals import PATHS, ERRORS, COLORS
@@ -12,12 +13,9 @@ def is_logged_in(email: str, browser: Chrome, timeout: int) -> bool:
 		element = browser.find_element(By.XPATH, xpath)
 		aria_label = element.get_attribute('aria-label')
 		if email in aria_label:
-			COLORS.success_messgae(f'[{email}] is logged in!')
 			return True
-		COLORS.error_messgae(f'[{email}] is not logged in!')
 		return False
 	except:
-		COLORS.error_messgae(f'[{email}] is not logged in!')
 		return False
 
 def requires_verification(browser: Chrome, timeout: int) -> int:
@@ -34,16 +32,8 @@ def requires_verification(browser: Chrome, timeout: int) -> int:
 	except:
 		return -1
 
-def verify_account(browser: Chrome, timeout: int, recovery: str) -> bool:
-	if recovery == '' or recovery == None:
-		return False
-	return True
-	
-
-def login(email: str, password: str, recovery: str, browser: Chrome, timeout: int) -> bool:
-	browser.get('chrome://welcome')
+def login(email: str, password: str, browser: Chrome, timeout: int, index: int) -> bool:
 	try:
-		browser_handler.wait_time_in_range(2.5, 3.5)
 		browser.get('https://accounts.google.com/signin/chrome/sync/identifier?ssp=1&continue=https%3A%2F%2Fwww.google.com%2F&flowName=GlifDesktopChromeSync&hl=en-GB')
 		browser_handler.wait_for_element_by_id(browser, timeout, 'identifierId')
 		element = browser.find_element(By.ID, 'identifierId')
@@ -82,15 +72,26 @@ def login(email: str, password: str, recovery: str, browser: Chrome, timeout: in
 		Logger.logger(ERRORS.VERIFICATION_ERROR, email)
 		return False
 	browser_handler.wait_time_in_range(2.5, 4.5)
-	browser.get('https://mail.google.com/')
+	browser.get(f'https://mail.google.com/mail/u/{index}/#inbox')
 	res =  is_logged_in(email, browser, timeout)
 	if res:
-		browser.get('https://accounts.google.com/')
 		browser_handler.wait_time_in_range(2.5, 4.5)
-		browser.get('https://mail.google.com/')
+		cookies_handler.save_cookies(PATHS.STORAGE + PATHS.SEP + email.split('@')[0], browser)
+		browser.get(f'https://myaccount.google.com/u/{index}/')
 		browser_handler.wait_time_in_range(2.5, 4.5)
 		cookies_handler.save_cookies(PATHS.STORAGE + PATHS.SEP + email.split('@')[0], browser)
 		return True
 	Logger.logger(ERRORS.VERIFICATION_ERROR, email)
 	return False
 	
+def account_group(accounts: list, browser: Chrome, timeout: int):
+	accs_num = len(accounts)
+	if accs_num == 0:
+		return
+	i = 0
+	for acc in accounts:
+		login(acc.getEmail(), acc.getPassword(), browser, timeout)
+		i = i + 1
+		if i < accs_num:
+			browser.execute_script('''window.open("about:blank");''')
+			browser.switch_to.window(browser.window_handles[i])

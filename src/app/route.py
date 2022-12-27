@@ -1,4 +1,5 @@
 from helpers import file_hanlder, cookies_handler, browser_handler
+from selenium.webdriver import Chrome
 from init import init_accounts, init_webdriver
 from init.init_globals import PATHS, ACTIONS
 from modules.Account import Account
@@ -7,13 +8,20 @@ import json
 import time
 import threading
 
-def route(account: Account, action: int, config):
-	browser = init_webdriver.init_webdriver(account, config)
+def actions_handler(accounts: list, browser: Chrome, action: int, config):
+	if action == ACTIONS.LOGIN:
+		account_handler.account_group(accounts, browser, config['timeout'])
+	time.sleep(300)
+
+def route(accounts: list, action: int, config):
+	browser = init_webdriver.init_webdriver(accounts[0], config)
 	if browser is None:
 		return
+	actions_handler(accounts, browser, action, config)
+	return
 	acc_subdir = account.getEmail().split('@')[0]
 	if action == ACTIONS.LOGIN:
-		if account_handler.login(account.getEmail(), account.getPassword(), account.getRecovery(), browser, config['timeout']):
+		if account_handler.login(account.getEmail(), account.getPassword(), browser, config['timeout']):
 			cookies_handler.save_cookies(PATHS.STORAGE + PATHS.SEP + acc_subdir, browser)
 		return
 	browser.get('https://accounts.google.com/')
@@ -45,21 +53,28 @@ def entry_point(action: int):
 	config = json.loads(config_file)
 	# for acc in accs:
 	# 	route(acc, action, config)
-	route(accs[0], action, config)
-	return
-	threads_num = config['number_of_threads']
-	accounts_num = len(accs)
+	# route(accs[0], action, config)
+	# return
+	number_of_threads = config['number_of_threads']
+	acc_per_browser = config['accounts_per_browser']
+	number_of_accs = len(accs)
+	if acc_per_browser < 1:
+		acc_per_browser = 1
+	elif acc_per_browser > number_of_accs:
+		acc_per_browser = number_of_accs
 	threads = []
 	i = 0
-	thread_handler()
-	while (i < accounts_num):
-		for j in range(threads_num):
-			if i >= accounts_num:
+	while (i < number_of_accs):
+		for j in range(number_of_threads):
+			if i >= number_of_accs:
 				break
-			t = threading.Thread(target=route, args=(accs[i], action, config))
+			limit = acc_per_browser + i
+			if limit > number_of_accs:
+				limit = number_of_accs
+			t = threading.Thread(target=route, args=(accs[i:limit], action, config))
 			t.start()
 			threads.append(t)
-			i+= 1
+			i+= acc_per_browser
 		time.sleep(1)
 		for tt in threads:
 			tt.join()
