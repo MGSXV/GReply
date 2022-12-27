@@ -40,13 +40,13 @@ def init_webdriver(account: Account, config) -> Chrome:
 	chrome_options.add_experimental_option('excludeSwitches', ['enable-logging', 'enable-automation'])
 	chrome_options.add_experimental_option("useAutomationExtension", False)
 	# chrome_options.add_experimental_option("excludeSwitche`s",[""])
-	if config['proxy'] == 'true':
-		if account.getProxyIp() != '0.0.0.0' or account.getProxyPort() != -1:
-			extention = generate_proxy_extension(account)
-			if extention is None:
-				print('Error while initializing webdriver!')
-				return None
-		chrome_options.add_argument(f'--load-extension={PATHS.CWD + PATHS.SEP + extention}')
+	# if config['proxy'] == 'true':
+	# 	if account.getProxyIp() != '0.0.0.0' or account.getProxyPort() != -1:
+	# 		extention = generate_proxy_extension(account)
+	# 		if extention is None:
+	# 			print('Error while initializing webdriver!')
+	# 			return None
+	# 	chrome_options.add_argument(f'--load-extension={PATHS.CWD + PATHS.SEP + extention}')
 	chrome_dirver = Chrome(options=chrome_options, executable_path=PATHS.CHROME_DRIVER)
 	# COLORS.success_messgae('Initializing webdriver is done!')
 	return chrome_dirver
