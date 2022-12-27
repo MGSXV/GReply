@@ -1,8 +1,9 @@
 {
 	"Author": "Soufiane Elkhamlichi",
 	"name": "GReply",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"number_of_threads": 1,
+	"accounts_per_browser": 3,
 	"timeout": 30,
 	"filter":{
 		"accept_from_name":"manager",
