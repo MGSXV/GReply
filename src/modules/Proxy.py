@@ -21,17 +21,17 @@ class Proxy:
 			raise Exception("Proxy must be valid!")
 		else:
 			self.ip = ip
-	def setProxyPort(self, port: int):
+	def setPort(self, port: int):
 		if port in range(0, 65535):
 			self.port = port
 		else:
 			raise Exception("Proxy's port must be between 0 and 65535!")
-	def setProxyUser(self, username: str):
+	def setUser(self, username: str):
 		if username == "" or username ==None:
 			raise Exception("Proxy user must be specified!")
 		else:
 			self.user = username
-	def setProxyPassword(self, password: str):
+	def setPassword(self, password: str):
 		if password == "" or password == None:
 			raise Exception("Proxy password must be specified!")
 		else:

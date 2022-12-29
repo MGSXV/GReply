@@ -1,5 +1,4 @@
 from modules.Proxy import Proxy
-from modules.Account import Account
 
 class Profile:
 	def __init__(self):
