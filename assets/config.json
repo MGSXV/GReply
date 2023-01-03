@@ -23,5 +23,5 @@
 		"send_date": "2022-12-22",
 		"template": "template.html"
 	},
-	"proxy": "true"
+	"proxy": "false"
 }
