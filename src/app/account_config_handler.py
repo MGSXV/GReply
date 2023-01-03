@@ -66,9 +66,9 @@ def account_settings(browser: Chrome, timeout: int, from_name: str, index: int):
 		edit_from = browser.find_element(By.XPATH, edit_from_xpath)
 		browser_handler.wait_time_in_range(2.0, 4.0)
 		edit_from.click()
-		window_before = browser.window_handles[0]
+		window_before = browser.window_handles[0 + index]
 		browser_handler.wait_time_in_range(0.3, 0.5)
-		window_after = browser.window_handles[1]
+		window_after = browser.window_handles[1 + index]
 		browser_handler.wait_time_in_range(0.3, 0.5)
 		browser.switch_to.window(window_after)
 		from_name_xpath = '/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[3]/td/form/table/tbody/tr[1]/td[2]/table/tbody/tr[2]/td[2]/input'

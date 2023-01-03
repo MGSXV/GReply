@@ -47,7 +47,7 @@ def route(profile: Profile, action: int, config):
 	if action == ACTIONS.LOGIN:
 		account_handler.account_group(profile.accounts, browser, config['timeout'])
 	elif action == ACTIONS.CONFIG:
-		print('config...')
+		account_config_handler.accounts_group_config(profile.accounts, browser, config['timeout'], config['config']['from_alias'])
 	elif action == ACTIONS.FILTER:
 		print('filter...')
 	elif action == ACTIONS.SEND:
