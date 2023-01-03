@@ -45,8 +45,8 @@ def save_settings(browser: Chrome, timeout: int):
 	except:
 		pass
 
-def general_settings(browser: Chrome, timeout: int):
-	browser.get('https://mail.google.com/mail/u/0/#settings/general')
+def general_settings(browser: Chrome, timeout: int, index: int):
+	browser.get(f'https://mail.google.com/mail/u/{index}/#settings/general')
 	browser_handler.wait_time_in_range(2.0, 4.0)
 	lang_handler(browser, timeout)
 	browser_handler.wait_time_in_range(2.0, 4.0)
@@ -54,8 +54,8 @@ def general_settings(browser: Chrome, timeout: int):
 	browser_handler.wait_time_in_range(2.0, 4.0)
 	save_settings(browser, timeout)
 
-def account_settings(browser: Chrome, timeout: int, from_name: str):
-	browser.get('https://mail.google.com/mail/u/0/#settings/accounts')
+def account_settings(browser: Chrome, timeout: int, from_name: str, index: int):
+	browser.get(f'https://mail.google.com/mail/u/{index}/#settings/accounts')
 	edit_from_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[2]/table/tbody/tr[1]/td[3]/span'
 	lable_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[1]/span[1]'
 	try:
@@ -83,3 +83,16 @@ def account_settings(browser: Chrome, timeout: int, from_name: str):
 		browser_handler.wait_time_in_range(1.3, 2.5)
 	except Exception as e:
 		print(e)
+
+def accounts_group_config(accounts:list, browser: Chrome, timeout: int, from_name: str):
+	accs_num = len(accounts)
+	if accs_num == 0:
+		return
+	i = 0
+	for account in accounts:
+		general_settings(browser, timeout, i)
+		account_settings(browser, timeout, from_name, i)
+		i += 1
+		if i < accs_num:
+			browser.execute_script('''window.open("about:blank");''')
+			browser.switch_to.window(browser.window_handles[i])
