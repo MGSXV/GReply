@@ -49,11 +49,11 @@ def route(profile: Profile, action: int, config):
 	elif action == ACTIONS.CONFIG:
 		account_config_handler.accounts_group_config(profile.accounts, browser, config['timeout'], config['config']['from_alias'])
 	elif action == ACTIONS.FILTER:
-		print('filter...')
+		account_filter_handler.accounts_group_filter(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'])
 	elif action == ACTIONS.SEND:
 		print('send...')
 	elif action == ACTIONS.CONFIG + ACTIONS.FILTER:
-		print('filter / config...')
+		account_filter_handler.accounts_group_filter_config(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'])
 	else:
 		print('unknown action')
 	browser.quit()
