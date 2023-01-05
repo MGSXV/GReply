@@ -2,6 +2,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
 from helpers import browser_handler
+from app import account_config_handler as ach
 
 def filter_actions(browser: Chrome, timeout: int, xpath: str, iswritable: bool, towrite: str):
 	browser_handler.wait_for_element_by_xpath(browser, timeout, xpath)
@@ -124,3 +125,28 @@ def filter_handler(browser: Chrome, timeout: int, accepted_from: str):
 	except Exception as e:
 		print(e)
 	
+def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_name: str):
+	accs_num = len(accounts)
+	if accs_num == 0:
+		return
+	i = 0
+	for account in accounts:
+		filter_handler(browser, timeout, from_name)
+		i += 1
+		if i < accs_num:
+			browser.execute_script('''window.open("about:blank");''')
+			browser.switch_to.window(browser.window_handles[i])
+
+def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, from_name: str):
+	accs_num = len(accounts)
+	if accs_num == 0:
+		return
+	i = 0
+	for account in accounts:
+		filter_handler(browser, timeout, from_name)
+		ach.general_settings(browser, timeout, i)
+		ach.account_settings(browser, timeout, from_name, i)
+		i += 1
+		if i < accs_num:
+			browser.execute_script('''window.open("about:blank");''')
+			browser.switch_to.window(browser.window_handles[i])
