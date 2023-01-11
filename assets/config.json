@@ -20,7 +20,7 @@
 	},
 	"send":{
 		"max_send_number": 1,
-		"send_date": "2022-12-22",
+		"send_date": "2023-01-07",
 		"template": "template.html"
 	},
 	"proxy": "false"
