@@ -4,6 +4,11 @@ class Account:
 	def __init__(self):
 		self.email = ""
 		self.password = ""
+		self.account_info = None
+		self.email_index = 1
+		self.total_emails = 1
+		self.is_active = False
+		self.tab_index = -1
 
 	# Getters
 	def getEmail(self):
