@@ -18,6 +18,8 @@ def print_help():
 				{COLORS.DODGER_BLUE_2}+{COLORS.DEFAULT} From alias.
 				{COLORS.DODGER_BLUE_2}+{COLORS.DEFAULT} Conversation view.
 		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--send{COLORS.DEFAULT}   : {COLORS.BOLD}Start sending messages.{COLORS.DEFAULT}
+		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--alias{COLORS.DEFAULT}   : {COLORS.BOLD}Randomize accounts aliases.{COLORS.DEFAULT}
+		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--bounce{COLORS.DEFAULT}   : {COLORS.BOLD}Extract bounced emails from accounts.{COLORS.DEFAULT}
 	""")
 
 def args_error():
@@ -40,6 +42,10 @@ def get_args() -> int:
 			return ACTIONS.CONFIG
 		elif sys.argv[1] == '--send':
 			return ACTIONS.SEND
+		elif sys.argv[1] == '--alias':
+			return ACTIONS.ALIAS
+		elif sys.argv[1] == '--bounce':
+			return ACTIONS.BOUNCE
 		else:
 			args_error()
 			return ACTIONS.ERROR

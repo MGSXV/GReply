@@ -41,6 +41,8 @@ class ACTIONS:
 	CONFIG = 2
 	SEND = 4
 	LOGIN = 5
+	ALIAS = 6
+	BOUNCE = 7
 class ERRORS:
 	UNKNOWN_ERROR = -1
 	EMAIL_ERROR = 1

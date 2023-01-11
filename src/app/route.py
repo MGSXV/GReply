@@ -19,6 +19,10 @@ def route(profile: Profile, action: int, config):
 		send_handler.send_group_send(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'], config)
 	elif action == ACTIONS.CONFIG + ACTIONS.FILTER:
 		account_filter_handler.accounts_group_filter_config(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'])
+	elif action == ACTIONS.ALIAS:
+		print("alias...")
+	elif action == ACTIONS.BOUNCE:
+		print("bounce...")
 	else:
 		print('unknown action')
 	browser.quit()
