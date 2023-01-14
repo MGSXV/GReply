@@ -2,7 +2,7 @@ from helpers import file_hanlder
 from init import init_webdriver, init_profile
 from init.init_globals import PATHS, ACTIONS
 from modules.Profile import Profile
-from app import account_handler, account_config_handler, account_filter_handler, send_handler
+from app import account_handler, account_config_handler, account_filter_handler, send_handler, account_alias_handler
 import json
 
 def route(profile: Profile, action: int, config):
@@ -20,7 +20,7 @@ def route(profile: Profile, action: int, config):
 	elif action == ACTIONS.CONFIG + ACTIONS.FILTER:
 		account_filter_handler.accounts_group_filter_config(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'])
 	elif action == ACTIONS.ALIAS:
-		print("alias...")
+		account_alias_handler.alias_group_handler(profile.accounts, browser, config)
 	elif action == ACTIONS.BOUNCE:
 		print("bounce...")
 	else:
@@ -31,6 +31,7 @@ def entry_point(action: int):
 	profiles = init_profile.set_profiles_list()
 	config_file = file_hanlder.read_file_content(PATHS.ASSETS + PATHS.SEP + 'config.json')
 	config = json.loads(config_file)
-	for profile in profiles:
-		route(profile, action, config)
+	# for profile in profiles:
+	# 	route(profile, action, config)
+	route(profiles[0], action, config)
 	return
