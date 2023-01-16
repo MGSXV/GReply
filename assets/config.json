@@ -16,12 +16,13 @@
 	"config":{
 		"language": "en",
 		"from_alias":"manager",
-		"conversation_view":"off"
+		"conversation_view":"off",
+		"alias_suffix": "suffix"
 	},
 	"send":{
 		"max_send_number": 1,
 		"send_date": "2023-01-07",
 		"template": "template.html"
 	},
-	"proxy": "false"
+	"proxy": false
 }
