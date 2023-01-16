@@ -7,15 +7,17 @@ class PATHS:
 	ASSETS = 'assets'
 	STORAGE = 'storage'
 	WEBDRIVER_DIR = ASSETS + SEP + 'webdriver'
+	CHROME_DRIVER = CWD + SEP + WEBDRIVER_DIR + SEP + 'chromedriver.exe'
 	PROXY_TEMPLATE_DIR = ASSETS + SEP + 'proxy_template'
 	LOG_FILE = CWD + SEP + STORAGE + SEP + 'logs'
-	CHROME_DRIVER = CWD + SEP + WEBDRIVER_DIR + SEP + 'chromedriver.exe'
 	RESOURCES_FILE = CWD + SEP + ASSETS + SEP + 'accounts.csv'
 	MANIFEST_TEMPLATE_FILE = CWD + SEP + PROXY_TEMPLATE_DIR + SEP + 'manifest.json'
 	SCRIPT_TEMPLATE_FILE = CWD + SEP + PROXY_TEMPLATE_DIR + SEP + 'background.js'
 	CREATIVE = os.getcwd() + SEP + ASSETS + SEP + 'template.html'
 	USERNAME= os.getenv('username')
 	CHROME_SYS_PATH = f'C:\\Users\\{USERNAME}\\AppData\\Local\\Google\\Chrome\\User Data'
+	# CHROME_SYS_PATH = f'C:\\Users\\{USERNAME}\\AppData\\Local\\Chromium\\User Data'
+	# CHROME_SYS_PATH = 'C:\\Program Files\\SRWare Iron (64-Bit)\\chrome.exe'
 
 class COLORS:
 	DEFAULT = attr("reset")
