@@ -21,7 +21,7 @@ def write_file(file_path: str, content: str, mode: str) -> bool:
 		target_file.close()
 		return True
 	except IOError:
-		print ("Could not open file: \"{file_path}\"!")
+		print (f"Could not open file: \"{file_path}\"!")
 		return False
 
 def read_csv_file(file_path: str, line: int) -> list:
