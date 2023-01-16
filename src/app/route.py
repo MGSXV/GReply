@@ -28,6 +28,7 @@ def route(profile: Profile, action: int, config):
 	browser.quit()
 
 def entry_point(action: int):
+	file_hanlder.create_dir_if_not_exist(PATHS.STORAGE)
 	profiles = init_profile.set_profiles_list()
 	config_file = file_hanlder.read_file_content(PATHS.ASSETS + PATHS.SEP + 'config.json')
 	config = json.loads(config_file)
