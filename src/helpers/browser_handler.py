@@ -9,8 +9,8 @@ import random
 def simulate_human_typing(text: str, element: WebElement):
 	element.clear()
 	for char in text:
-		wait_time_in_range(.1, .3)
-		element.send_keys(char)
+		wait_time_in_range(.1, .5)
+		element.send_keys(char.lower())
 
 def wait_for_element_by_id(browser: Chrome, timeout: int, _id: str):
 	WebDriverWait(browser, timeout).until(
