@@ -73,8 +73,8 @@ def bounce_handler(browser: Chrome, timeout: int):
 	except:
 		pass
 
-def filter_handler(browser: Chrome, timeout: int, accepted_from: str):
-	browser.get('https://mail.google.com/mail/u/0/#inbox')
+def filter_handler(browser: Chrome, timeout: int, accepted_from: str, index: int):
+	browser.get(f'https://mail.google.com/mail/u/{index}/#inbox')
 	filter_xpath = '//*[@id="aso_search_form_anchor"]/button[2]'
 	try:
 		# Filter icon in search
@@ -131,7 +131,7 @@ def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_nam
 		return
 	i = 0
 	for account in accounts:
-		filter_handler(browser, timeout, from_name)
+		filter_handler(browser, timeout, from_name, i)
 		i += 1
 		if i < accs_num:
 			browser.execute_script('''window.open("about:blank");''')
@@ -143,7 +143,7 @@ def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, f
 		return
 	i = 0
 	for account in accounts:
-		filter_handler(browser, timeout, from_name)
+		filter_handler(browser, timeout, from_name, i)
 		ach.general_settings(browser, timeout, i)
 		ach.account_settings(browser, timeout, from_name, i)
 		i += 1
