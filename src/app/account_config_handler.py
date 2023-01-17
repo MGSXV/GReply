@@ -46,8 +46,12 @@ def save_settings(browser: Chrome, timeout: int):
 		pass
 
 def general_settings(browser: Chrome, timeout: int, index: int):
-	browser.get(f'https://mail.google.com/mail/u/{index}/#settings/general')
+	old_url = f'https://mail.google.com/mail/u/{index}/#settings/general'
+	browser.get(old_url)
 	browser_handler.wait_time_in_range(2.0, 4.0)
+	new_url = browser.current_url
+	if new_url != old_url:
+		return
 	lang_handler(browser, timeout)
 	browser_handler.wait_time_in_range(2.0, 4.0)
 	conv_view(browser, timeout)
@@ -55,12 +59,22 @@ def general_settings(browser: Chrome, timeout: int, index: int):
 	save_settings(browser, timeout)
 
 def account_settings(browser: Chrome, timeout: int, from_name: str, index: int):
-	browser.get(f'https://mail.google.com/mail/u/{index}/#settings/accounts')
+	old_url = f'https://mail.google.com/mail/u/{index}/#settings/accounts'
+	browser.get(old_url)
 	edit_from_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[2]/table/tbody/tr[1]/td[3]/span'
 	lable_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[1]/span[1]'
+	add_mail_addr_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[2]/table[1]/tbody/tr[2]'
+	from_name_xpath = '/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[3]/td/form/table/tbody/tr[1]/td[2]/table/tbody/tr[2]/td[2]/input'
 	try:
 		browser_handler.wait_for_element_to_be_clickable(browser, timeout, lable_xpath)
-		browser.find_element(By.XPATH, lable_xpath).click()
+		browser_handler.wait_for_element_by_xpath(browser, timeout, add_mail_addr_xpath)
+		new_url = browser.current_url
+		if new_url != old_url:
+			return
+		element = browser.find_element(By.XPATH, add_mail_addr_xpath)
+		if element.text != 'Add another email address':
+			edit_from_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[2]/table[1]/tbody/tr[2]/td[3]/span'
+			from_name_xpath = '/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[3]/td/form/table/tbody/tr[1]/td[2]/input'
 		browser_handler.wait_for_element_to_be_clickable(browser, timeout, edit_from_xpath)
 		browser_handler.wait_time_in_range(2.0, 4.0)
 		edit_from = browser.find_element(By.XPATH, edit_from_xpath)
@@ -71,7 +85,6 @@ def account_settings(browser: Chrome, timeout: int, from_name: str, index: int):
 		window_after = browser.window_handles[1 + index]
 		browser_handler.wait_time_in_range(0.3, 0.5)
 		browser.switch_to.window(window_after)
-		from_name_xpath = '/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[3]/td/form/table/tbody/tr[1]/td[2]/table/tbody/tr[2]/td[2]/input'
 		browser_handler.wait_for_element_by_xpath(browser, timeout, from_name_xpath)
 		browser_handler.wait_time_in_range(2.0, 4.0)
 		element = browser.find_element(By.XPATH, from_name_xpath)
