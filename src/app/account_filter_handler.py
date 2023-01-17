@@ -74,8 +74,13 @@ def bounce_handler(browser: Chrome, timeout: int):
 		pass
 
 def filter_handler(browser: Chrome, timeout: int, accepted_from: str, index: int):
-	browser.get(f'https://mail.google.com/mail/u/{index}/#inbox')
+	old_url = f'https://mail.google.com/mail/u/{index}/#inbox'
+	browser.get(old_url)
 	filter_xpath = '//*[@id="aso_search_form_anchor"]/button[2]'
+	browser_handler.wait_time_in_range(1.0, 1.5)
+	new_url = browser.current_url
+	if old_url != new_url:
+		return
 	try:
 		# Filter icon in search
 		filter_actions(browser, timeout, filter_xpath, False, '')
