@@ -142,7 +142,7 @@ def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_nam
 			browser.execute_script('''window.open("about:blank");''')
 			browser.switch_to.window(browser.window_handles[i])
 
-def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, from_name: str):
+def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, from_name: str, alias_name: str):
 	accs_num = len(accounts)
 	if accs_num == 0:
 		return
@@ -150,7 +150,7 @@ def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, f
 	for account in accounts:
 		filter_handler(browser, timeout, from_name, i)
 		ach.general_settings(browser, timeout, i)
-		ach.account_settings(browser, timeout, from_name, i)
+		ach.account_settings(browser, timeout, alias_name, i)
 		i += 1
 		if i < accs_num:
 			browser.execute_script('''window.open("about:blank");''')

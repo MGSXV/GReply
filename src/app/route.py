@@ -18,7 +18,7 @@ def route(profile: Profile, action: int, config):
 	elif action == ACTIONS.SEND:
 		send_handler.send_group_send(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'], config)
 	elif action == ACTIONS.CONFIG + ACTIONS.FILTER:
-		account_filter_handler.accounts_group_filter_config(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'])
+		account_filter_handler.accounts_group_filter_config(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'], config['config']['from_alias'])
 	elif action == ACTIONS.ALIAS:
 		account_alias_handler.alias_group_handler(profile.accounts, browser, config)
 	elif action == ACTIONS.BOUNCE:
