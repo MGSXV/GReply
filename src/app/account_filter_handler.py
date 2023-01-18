@@ -13,22 +13,16 @@ def filter_actions(browser: Chrome, timeout: int, xpath: str, iswritable: bool, 
 		element.clear()
 		browser_handler.simulate_human_typing(towrite, element)
 
-def filter_options(browser: Chrome, lable_name: str, j:int):
-	i = 0
+def filter_options(browser: Chrome, lable_name: str, j:int, i: int):
 	browser_handler.wait_time_in_range(.7, 1.7)
-	while (i:=i+1):
-		xpath = f'/html/body/div[{i}]/div/div[2]/div[3]/div/div[{j}]/label'
-		try:
-			browser_handler.wait_time_in_range(.1, .3)
-			element = browser.find_element(By.XPATH, xpath)
-			if lable_name in element.text:
-				return [xpath, i]
-			if i > 30:
-				break
-		except:
-			if i > 30:
-				break
-			continue
+	xpath = f'/html/body/div[{i}]/div/div[2]/div[3]/div/div[{j}]/label'
+	try:
+		browser_handler.wait_time_in_range(.1, .3)
+		element = browser.find_element(By.XPATH, xpath)
+		if lable_name in element.text:
+			return [xpath, i]
+	except Exception as e:
+		print(e)
 	return ['', i]
 
 def bounce_handler(browser: Chrome, timeout: int):
@@ -58,7 +52,8 @@ def bounce_handler(browser: Chrome, timeout: int):
 		xpath = f'/html/body/div[{i}]/div/div[2]/div[10]/div[2]'
 		browser_handler.wait_time_in_range(1.1, 3.3)
 		filter_actions(browser, timeout, xpath, False, '')
-		xpath = filter_options(browser, 'Categorize as:', 10)
+		i = i+ 1
+		xpath = filter_options(browser, 'Categorize as:', 10, i)
 		if xpath[0] != '':
 			xpath[0] = xpath[0].replace('label', 'div/div[1]')
 			filter_actions(browser, timeout, xpath[0], False, '')
@@ -108,13 +103,14 @@ def filter_handler(browser: Chrome, timeout: int, accepted_from: str, index: int
 		browser_handler.wait_time_in_range(1.1, 3.3)
 		filter_actions(browser, timeout, xpath, False, '')
 		# Filter settings
-		xpath = filter_options(browser, 'Never send it to Spam', 7)
+		i = i + 1
+		xpath = filter_options(browser, 'Never send it to Spam', 7, i)
 		if xpath[0] != '':
 			filter_actions(browser, timeout, xpath[0], False, '')
-		xpath = filter_options(browser, 'Always mark it as important', 8)
+		xpath = filter_options(browser, 'Always mark it as important', 8, i)
 		if xpath[0] != '':
 			filter_actions(browser, timeout, xpath[0], False, '')
-		xpath = filter_options(browser, 'Categorize as:', 10)
+		xpath = filter_options(browser, 'Categorize as:', 10, i)
 		if xpath[0] != '':
 			xpath[0] = xpath[0].replace('label', 'div/div[1]')
 			filter_actions(browser, timeout, xpath[0], False, '')
