@@ -127,44 +127,10 @@ def filter_handler(browser: Chrome, timeout: int, accepted_from: str, index: int
 		bounce_handler(browser, timeout)
 	except Exception as e:
 		print(e)
-	
-
-def open_all_accounts(accounts: list, browser: Chrome):
-	i = 0
-	accs_num = len(accounts)
-	for acc in accounts:
-		browser.switch_to.window(browser.window_handles[i])
-		old_url = f'https://mail.google.com/mail/u/{i}/#inbox'
-		browser.get(old_url)
-		browser_handler.wait_time_in_range(1.0, 1.5)
-		new_url = browser.current_url
-		if new_url != old_url:
-			browser.execute_script("window.close('','_parent','');")
-			browser.switch_to.window(browser.window_handles[0])
-			break
-		if i < accs_num - 1:
-			browser.execute_script('''window.open("about:blank");''')
-		i = i + 1
-	return i
-
-def get_active_accounts(accounts: list, browser: Chrome) -> list:
-	num_of_tabs = len(browser.window_handles)
-	accs = []
-	i = 0
-	while i < num_of_tabs:
-		browser.switch_to.window(browser.window_handles[i])
-		browser_handler.wait_time_in_range(.2, .5)
-		for account in accounts:
-			if account.email.lower() in browser.title:
-				account.is_active = True
-				account.tab_index = i
-				accs.append(account)
-		i += 1
-	return accs
 
 def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_name: str):
-	num_of_accs = open_all_accounts(accounts, browser)
-	accs_list = get_active_accounts(accounts, browser)
+	num_of_accs = ach.open_all_accounts(accounts, browser)
+	accs_list = ach.get_active_accounts(accounts, browser)
 	if num_of_accs == 0:
 		return
 	for account in accs_list:
@@ -172,15 +138,12 @@ def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_nam
 		filter_handler(browser, timeout, from_name, account.tab_index)
 
 def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, from_name: str, alias_name: str):
-	accs_num = len(accounts)
-	if accs_num == 0:
+	num_of_accs = ach.open_all_accounts(accounts, browser)
+	accs_list = ach.get_active_accounts(accounts, browser)
+	if num_of_accs == 0:
 		return
-	i = 0
-	for account in accounts:
-		filter_handler(browser, timeout, from_name, i)
-		ach.general_settings(browser, timeout, i)
-		ach.account_settings(browser, timeout, alias_name, i)
-		i += 1
-		if i < accs_num:
-			browser.execute_script('''window.open("about:blank");''')
-			browser.switch_to.window(browser.window_handles[i])
+	for account in accs_list:
+		browser.switch_to.window(browser.window_handles[account.tab_index])
+		filter_handler(browser, timeout, from_name, account.tab_index)
+		ach.general_settings(browser, timeout, account.tab_index)
+		ach.account_settings(browser, timeout, alias_name, account.tab_index, num_of_accs)

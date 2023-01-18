@@ -58,7 +58,7 @@ def general_settings(browser: Chrome, timeout: int, index: int):
 	browser_handler.wait_time_in_range(2.0, 4.0)
 	save_settings(browser, timeout)
 
-def account_settings(browser: Chrome, timeout: int, from_name: str, index: int):
+def account_settings(browser: Chrome, timeout: int, from_name: str, index: int, last_index: int):
 	old_url = f'https://mail.google.com/mail/u/{index}/#settings/accounts'
 	browser.get(old_url)
 	edit_from_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[2]/table/tbody/tr[1]/td[3]/span'
@@ -80,9 +80,9 @@ def account_settings(browser: Chrome, timeout: int, from_name: str, index: int):
 		edit_from = browser.find_element(By.XPATH, edit_from_xpath)
 		browser_handler.wait_time_in_range(2.0, 4.0)
 		edit_from.click()
-		window_before = browser.window_handles[0 + index]
+		window_before = browser.window_handles[index]
 		browser_handler.wait_time_in_range(0.3, 0.5)
-		window_after = browser.window_handles[1 + index]
+		window_after = browser.window_handles[last_index]
 		browser_handler.wait_time_in_range(0.3, 0.5)
 		browser.switch_to.window(window_after)
 		browser_handler.wait_for_element_by_xpath(browser, timeout, from_name_xpath)
@@ -97,15 +97,45 @@ def account_settings(browser: Chrome, timeout: int, from_name: str, index: int):
 	except Exception as e:
 		print(e)
 
-def accounts_group_config(accounts:list, browser: Chrome, timeout: int, from_name: str):
-	accs_num = len(accounts)
-	if accs_num == 0:
-		return
+def open_all_accounts(accounts: list, browser: Chrome):
 	i = 0
-	for account in accounts:
-		general_settings(browser, timeout, i)
-		account_settings(browser, timeout, from_name, i)
-		i += 1
-		if i < accs_num:
+	accs_num = len(accounts)
+	for acc in accounts:
+		browser.switch_to.window(browser.window_handles[i])
+		old_url = f'https://mail.google.com/mail/u/{i}/#inbox'
+		browser.get(old_url)
+		browser_handler.wait_time_in_range(1.0, 1.5)
+		new_url = browser.current_url
+		if new_url != old_url:
+			browser.execute_script("window.close('','_parent','');")
+			browser.switch_to.window(browser.window_handles[0])
+			break
+		if i < accs_num - 1:
 			browser.execute_script('''window.open("about:blank");''')
-			browser.switch_to.window(browser.window_handles[i])
+		i = i + 1
+	return i
+
+def get_active_accounts(accounts: list, browser: Chrome) -> list:
+	num_of_tabs = len(browser.window_handles)
+	accs = []
+	i = 0
+	while i < num_of_tabs:
+		browser.switch_to.window(browser.window_handles[i])
+		browser_handler.wait_time_in_range(.2, .5)
+		for account in accounts:
+			if account.email.lower() in browser.title:
+				account.is_active = True
+				account.tab_index = i
+				accs.append(account)
+		i += 1
+	return accs
+
+def accounts_group_config(accounts:list, browser: Chrome, timeout: int, from_name: str):
+	num_of_accs = open_all_accounts(accounts, browser)
+	accs_list = get_active_accounts(accounts, browser)
+	if num_of_accs == 0:
+		return
+	for account in accs_list:
+		browser.switch_to.window(browser.window_handles[account.tab_index])
+		general_settings(browser, timeout, account.tab_index)
+		account_settings(browser, timeout, from_name, account.tab_index, num_of_accs)
