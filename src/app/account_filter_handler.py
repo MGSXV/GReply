@@ -21,8 +21,10 @@ def filter_options(browser: Chrome, lable_name: str, j:int, i: int):
 		element = browser.find_element(By.XPATH, xpath)
 		if lable_name in element.text:
 			return [xpath, i]
-	except Exception as e:
-		print(e)
+		else:
+			return filter_options(browser, lable_name, j + 1, i)
+	except:
+		return filter_options(browser, lable_name, j + 1, i)
 	return ['', i]
 
 def bounce_handler(browser: Chrome, timeout: int):
@@ -31,7 +33,7 @@ def bounce_handler(browser: Chrome, timeout: int):
 		# Filter icon in search
 		filter_actions(browser, timeout, filter_xpath, False, '')
 		# From name input
-		i = 0
+		i = 15
 		browser_handler.wait_time_in_range(3.1, 5.3)
 		while (i:=i+1):
 			xpath = f'/html/body/div[{i}]/div/div[2]/div[1]/span[1]/label'
@@ -52,7 +54,7 @@ def bounce_handler(browser: Chrome, timeout: int):
 		xpath = f'/html/body/div[{i}]/div/div[2]/div[10]/div[2]'
 		browser_handler.wait_time_in_range(1.1, 3.3)
 		filter_actions(browser, timeout, xpath, False, '')
-		i = i+ 1
+		i = i + 1
 		xpath = filter_options(browser, 'Categorize as:', 10, i)
 		if xpath[0] != '':
 			xpath[0] = xpath[0].replace('label', 'div/div[1]')
@@ -80,7 +82,7 @@ def filter_handler(browser: Chrome, timeout: int, accepted_from: str, index: int
 		# Filter icon in search
 		filter_actions(browser, timeout, filter_xpath, False, '')
 		# From name input
-		i = 0
+		i = 15
 		browser_handler.wait_time_in_range(3.1, 5.3)
 		while (i:=i+1):
 			xpath = f'/html/body/div[{i}]/div/div[2]/div[1]/span[1]/label'
@@ -126,17 +128,48 @@ def filter_handler(browser: Chrome, timeout: int, accepted_from: str, index: int
 	except Exception as e:
 		print(e)
 	
-def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_name: str):
-	accs_num = len(accounts)
-	if accs_num == 0:
-		return
+
+def open_all_accounts(accounts: list, browser: Chrome):
 	i = 0
-	for account in accounts:
-		filter_handler(browser, timeout, from_name, i)
-		i += 1
-		if i < accs_num:
+	accs_num = len(accounts)
+	for acc in accounts:
+		browser.switch_to.window(browser.window_handles[i])
+		old_url = f'https://mail.google.com/mail/u/{i}/#inbox'
+		browser.get(old_url)
+		browser_handler.wait_time_in_range(1.0, 1.5)
+		new_url = browser.current_url
+		if new_url != old_url:
+			browser.execute_script("window.close('','_parent','');")
+			browser.switch_to.window(browser.window_handles[0])
+			break
+		if i < accs_num - 1:
 			browser.execute_script('''window.open("about:blank");''')
-			browser.switch_to.window(browser.window_handles[i])
+		i = i + 1
+	return i
+
+def get_active_accounts(accounts: list, browser: Chrome) -> list:
+	num_of_tabs = len(browser.window_handles)
+	accs = []
+	i = 0
+	while i < num_of_tabs:
+		browser.switch_to.window(browser.window_handles[i])
+		browser_handler.wait_time_in_range(.2, .5)
+		for account in accounts:
+			if account.email.lower() in browser.title:
+				account.is_active = True
+				account.tab_index = i
+				accs.append(account)
+		i += 1
+	return accs
+
+def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_name: str):
+	num_of_accs = open_all_accounts(accounts, browser)
+	accs_list = get_active_accounts(accounts, browser)
+	if num_of_accs == 0:
+		return
+	for account in accs_list:
+		browser.switch_to.window(browser.window_handles[account.tab_index])
+		filter_handler(browser, timeout, from_name, account.tab_index)
 
 def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, from_name: str, alias_name: str):
 	accs_num = len(accounts)
