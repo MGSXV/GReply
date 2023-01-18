@@ -9,7 +9,7 @@ import random
 def simulate_human_typing(text: str, element: WebElement):
 	element.clear()
 	for char in text:
-		wait_time_in_range(.1, .5)
+		wait_time_in_range(.05, .25)
 		element.send_keys(char)
 
 def wait_for_element_by_id(browser: Chrome, timeout: int, _id: str):
