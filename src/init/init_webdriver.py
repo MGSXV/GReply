@@ -36,6 +36,7 @@ def init_webdriver(profile: Profile, config) -> Chrome:
 	chrome_options = ChromeOptions()
 	chrome_options.add_argument("--lang=en-US")
 	chrome_options.add_argument("--disable-popup-blocking")
+	chrome_options.add_argument("--start-maximized")
 	chrome_options.add_argument('--disable-blink-features=AutomationControlled')
 	# chrome_options.add_experimental_option('prefs', {'int`l.accept_languages': 'en,en_US'})
 	# chrome_options.add_experimental_option('excludeSwitches', ['enable-logging', 'enable-automation'])
