@@ -98,11 +98,10 @@ def send_group_send(accounts: list, browser: Chrome, timeout: int, accepted_from
 			browser.switch_to.window(browser.window_handles[acc.tab_index])
 			element = locate_email(browser, timeout, accepted_from, f'{tbody_xpath}/tr[{acc.email_index}]/td[4]')
 			if element is not None:
-				browser_handler.wait_time_in_range(3.4, 5.5)
 				element.click()
-				browser_handler.wait_time_in_range(3.4, 5.5)
+				browser_handler.wait_time_in_range(1.4, 2.5)
 				send_reply(browser, timeout, acc.tab_index)
-				browser_handler.wait_time_in_range(3.4, 5.5)
+				browser_handler.wait_time_in_range(1.4, 1.5)
 				back_to_inbox(browser, timeout)
 			else:
 				browser.execute_script("window.close('','_parent','');")
