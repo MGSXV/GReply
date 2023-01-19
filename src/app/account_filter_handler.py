@@ -144,6 +144,6 @@ def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, f
 		return
 	for account in accs_list:
 		browser.switch_to.window(browser.window_handles[account.tab_index])
-		filter_handler(browser, timeout, from_name, account.tab_index)
 		ach.general_settings(browser, timeout, account.tab_index)
 		ach.account_settings(browser, timeout, alias_name, account.tab_index, num_of_accs)
+		filter_handler(browser, timeout, from_name, account.tab_index)
