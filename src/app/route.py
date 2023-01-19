@@ -25,6 +25,7 @@ def route(profile: Profile, action: int, config):
 		print("bounce...")
 	else:
 		print('unknown action')
+	browser.close()
 	browser.quit()
 
 def entry_point(action: int):
@@ -32,7 +33,7 @@ def entry_point(action: int):
 	profiles = init_profile.set_profiles_list()
 	config_file = file_hanlder.read_file_content(PATHS.ASSETS + PATHS.SEP + 'config.json')
 	config = json.loads(config_file)
-	# for profile in profiles:
-	# 	route(profile, action, config)
-	route(profiles[0], action, config)
+	for profile in profiles:
+		route(profile, action, config)
+	# route(profiles[0], action, config)
 	return
