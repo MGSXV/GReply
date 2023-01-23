@@ -24,8 +24,7 @@ def filter_options(browser: Chrome, lable_name: str, j:int, i: int):
 		else:
 			return filter_options(browser, lable_name, j + 1, i)
 	except:
-		return filter_options(browser, lable_name, j + 1, i)
-	return ['', i]
+		return ['', i]
 
 def bounce_handler(browser: Chrome, timeout: int):
 	filter_xpath = '//*[@id="aso_search_form_anchor"]/button[2]'
@@ -56,6 +55,8 @@ def bounce_handler(browser: Chrome, timeout: int):
 		filter_actions(browser, timeout, xpath, False, '')
 		i = i + 1
 		xpath = filter_options(browser, 'Categorize as:', 10, i)
+		if xpath[0] == '':
+			xpath = filter_options(browser, 'Categorise as:', 10, i)
 		if xpath[0] != '':
 			xpath[0] = xpath[0].replace('label', 'div/div[1]')
 			filter_actions(browser, timeout, xpath[0], False, '')
@@ -113,6 +114,8 @@ def filter_handler(browser: Chrome, timeout: int, accepted_from: str, index: int
 		if xpath[0] != '':
 			filter_actions(browser, timeout, xpath[0], False, '')
 		xpath = filter_options(browser, 'Categorize as:', 10, i)
+		if xpath[0] == '':
+			xpath = filter_options(browser, 'Categorise as:', 10, i)
 		if xpath[0] != '':
 			xpath[0] = xpath[0].replace('label', 'div/div[1]')
 			filter_actions(browser, timeout, xpath[0], False, '')
@@ -136,6 +139,7 @@ def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_nam
 	for account in accs_list:
 		browser.switch_to.window(browser.window_handles[account.tab_index])
 		filter_handler(browser, timeout, from_name, account.tab_index)
+	# filter_handler(browser, timeout, from_name, 0)
 
 def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, from_name: str, alias_name: str):
 	num_of_accs = ach.open_all_accounts(accounts, browser)
