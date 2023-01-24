@@ -2,8 +2,10 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from helpers import browser_handler
+from helpers.logs_handler import Logger
+from init.init_globals import ERRORS
 
-def lang_handler(browser: Chrome, timeout: int):
+def lang_handler(browser: Chrome, timeout: int, email_addr: str):
 	dropdown_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[1]/div/table/tbody/tr[1]/td[2]/div[1]/select'
 	try:
 		browser_handler.wait_for_element_by_xpath(browser, timeout, dropdown_xpath)
@@ -13,9 +15,9 @@ def lang_handler(browser: Chrome, timeout: int):
 		if 'English (US)' != selected.text:
 			dropdown.select_by_value('en')
 	except:
-		pass
+		Logger.logger(ERRORS.CONFIG_GENERAL_ERROR, email_addr, 'config_logs')
 
-def conv_view(browser: Chrome, timeout: int):
+def conv_view(browser: Chrome, timeout: int, email_addr: str):
 	main_div_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div'
 	conv_view_expath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[1]/div/table/tbody/tr[17]/td[1]/span[1]'
 	try:
@@ -31,9 +33,9 @@ def conv_view(browser: Chrome, timeout: int):
 		element.click()
 		browser_handler.wait_time_in_range(2.5, 4.0)
 	except:
-		pass
+		Logger.logger(ERRORS.CONFIG_GENERAL_ERROR, '', 'config_logs')
 
-def save_settings(browser: Chrome, timeout: int):
+def save_settings(browser: Chrome, timeout: int, email_addr: str):
 	xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[1]/div/table/tbody/tr[33]/td/div/button[1]'
 	try:
 		browser_handler.wait_for_element_by_xpath(browser, timeout, xpath)
@@ -43,22 +45,22 @@ def save_settings(browser: Chrome, timeout: int):
 			button.click()
 		browser_handler.wait_time_in_range(2.5, 4.0)
 	except:
-		pass
+		Logger.logger(ERRORS.CONFIG_GENERAL_ERROR, email_addr, 'config_logs')
 
-def general_settings(browser: Chrome, timeout: int, index: int):
+def general_settings(browser: Chrome, timeout: int, index: int, email_addr: str):
 	old_url = f'https://mail.google.com/mail/u/{index}/#settings/general'
 	browser.get(old_url)
 	browser_handler.wait_time_in_range(2.0, 4.0)
 	new_url = browser.current_url
 	if new_url != old_url:
 		return
-	lang_handler(browser, timeout)
+	lang_handler(browser, timeout, email_addr)
 	browser_handler.wait_time_in_range(2.0, 4.0)
-	conv_view(browser, timeout)
+	conv_view(browser, timeout, email_addr)
 	browser_handler.wait_time_in_range(2.0, 4.0)
-	save_settings(browser, timeout)
+	save_settings(browser, timeout, email_addr)
 
-def account_settings(browser: Chrome, timeout: int, from_name: str, index: int, last_index: int):
+def account_settings(browser: Chrome, timeout: int, from_name: str, index: int, last_index: int, email_addr: str):
 	old_url = f'https://mail.google.com/mail/u/{index}/#settings/accounts'
 	browser.get(old_url)
 	edit_from_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[2]/table/tbody/tr[1]/td[3]/span'
@@ -66,7 +68,6 @@ def account_settings(browser: Chrome, timeout: int, from_name: str, index: int, 
 	add_mail_addr_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[2]/table[1]/tbody/tr[2]'
 	from_name_xpath = '/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[3]/td/form/table/tbody/tr[1]/td[2]/table/tbody/tr[2]/td[2]/input'
 	try:
-		browser_handler.wait_for_element_to_be_clickable(browser, timeout, lable_xpath)
 		browser_handler.wait_for_element_by_xpath(browser, timeout, add_mail_addr_xpath)
 		new_url = browser.current_url
 		if new_url != old_url:
@@ -75,7 +76,7 @@ def account_settings(browser: Chrome, timeout: int, from_name: str, index: int, 
 		if element.text != 'Add another email address':
 			edit_from_xpath = '/html/body/div[7]/div[3]/div/div[2]/div[2]/div/div/div/div/div[2]/div/div[1]/div/div/div/div/div/div/div[4]/div/table/tbody/tr[4]/td[2]/table[1]/tbody/tr[2]/td[3]/span'
 			from_name_xpath = '/html/body/div/table/tbody/tr[2]/td/table/tbody/tr[3]/td/form/table/tbody/tr[1]/td[2]/input'
-		browser_handler.wait_for_element_to_be_clickable(browser, timeout, edit_from_xpath)
+		browser_handler.wait_for_element_by_xpath(browser, timeout, edit_from_xpath)
 		browser_handler.wait_time_in_range(2.0, 4.0)
 		edit_from = browser.find_element(By.XPATH, edit_from_xpath)
 		browser_handler.wait_time_in_range(2.0, 4.0)
@@ -95,7 +96,7 @@ def account_settings(browser: Chrome, timeout: int, from_name: str, index: int, 
 		browser.switch_to.window(window_before)
 		browser_handler.wait_time_in_range(1.3, 2.5)
 	except Exception as e:
-		print(e)
+		Logger.logger(ERRORS.CONFIG_ACCOUNT_ERROR, email_addr, 'config_logs')
 
 def open_all_accounts(accounts: list, browser: Chrome):
 	i = 0
@@ -137,8 +138,8 @@ def accounts_group_config(accounts:list, browser: Chrome, timeout: int, from_nam
 		return
 	for account in accs_list:
 		browser.switch_to.window(browser.window_handles[account.tab_index])
-		general_settings(browser, timeout, account.tab_index)
-		account_settings(browser, timeout, from_name, account.tab_index, num_of_accs)
+		general_settings(browser, timeout, account.tab_index, account.email)
+		account_settings(browser, timeout, from_name, account.tab_index, num_of_accs, account.email)
 
 def accounts_group_account_settings(accounts:list, browser: Chrome, timeout: int, from_name: str):
 	num_of_accs = open_all_accounts(accounts, browser)
@@ -147,7 +148,7 @@ def accounts_group_account_settings(accounts:list, browser: Chrome, timeout: int
 		return
 	for account in accs_list:
 		browser.switch_to.window(browser.window_handles[account.tab_index])
-		account_settings(browser, timeout, from_name, account.tab_index, num_of_accs)
+		account_settings(browser, timeout, from_name, account.tab_index, num_of_accs, account.email)
 
 def accounts_group_general_settings(accounts:list, browser: Chrome, timeout: int):
 	num_of_accs = open_all_accounts(accounts, browser)
@@ -156,4 +157,4 @@ def accounts_group_general_settings(accounts:list, browser: Chrome, timeout: int
 		return
 	for account in accs_list:
 		browser.switch_to.window(browser.window_handles[account.tab_index])
-		general_settings(browser, timeout, account.tab_index)
+		general_settings(browser, timeout, account.tab_index, account.email)

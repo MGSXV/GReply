@@ -32,6 +32,10 @@ class Logger():
 			line += 'VERIFICATION_ERROR\t\t: account requires verifcation: (' + email + ')'
 		elif level == ERRORS.BLOCKED_ACC_ERROR:
 			line += 'BLOCKED_ACC_ERROR\t\t: account is temporarily blocked: (' + email + ')'
+		elif level == ERRORS.CONFIG_GENERAL_ERROR:
+			line += 'CONFIG_GENERAL_ERROR\t\t: General config not completed: (' + email + ')'
+		elif level == ERRORS.CONFIG_ACCOUNT_ERROR:
+			line += 'CONFIG_ACCOUNT_ERROR\t\t: Account config not completed: (' + email + ')'
 		else:
 			line += 'Unknown error\t\t\t: (' + email + ')'
 		line += '\n'
