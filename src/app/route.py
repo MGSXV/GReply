@@ -13,8 +13,16 @@ def route(profile: Profile, action: int, config):
 		account_handler.account_group(profile.accounts, browser, config['timeout'])
 	elif action == ACTIONS.CONFIG:
 		account_config_handler.accounts_group_config(profile.accounts, browser, config['timeout'], config['config']['from_alias'])
+	elif action == ACTIONS.CONFIG_GENERAL:
+		print("Config general")
+	elif action == ACTIONS.CONFIG_ACCOUNT:
+		print("Config account")
 	elif action == ACTIONS.FILTER:
 		account_filter_handler.accounts_group_filter(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'])
+	elif action == ACTIONS.FILTER_FROM:
+		print("Filter from")
+	elif action == ACTIONS.FILTER_BOUNCE:
+		print("Filter by BOUNCE")
 	elif action == ACTIONS.SEND:
 		send_handler.send_group_send(profile.accounts, browser, config['timeout'], config['filter']['accept_from_name'], config)
 	elif action == ACTIONS.CONFIG + ACTIONS.FILTER:

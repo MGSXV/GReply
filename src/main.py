@@ -13,14 +13,16 @@ from sys import exit
 
 def print_help():
 	print(f"""
-		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--login{COLORS.DEFAULT} : {COLORS.BOLD}Create chrome profiles and login to accounts.{COLORS.DEFAULT}
-		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--filter{COLORS.DEFAULT} : {COLORS.BOLD}Create / Update account's inbox filter.{COLORS.DEFAULT}
-		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--config{COLORS.DEFAULT} : {COLORS.BOLD}Create / Update account's config, including:{COLORS.DEFAULT}
-				{COLORS.DODGER_BLUE_2}+{COLORS.DEFAULT} From alias.
-				{COLORS.DODGER_BLUE_2}+{COLORS.DEFAULT} Conversation view.
-		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--send{COLORS.DEFAULT}   : {COLORS.BOLD}Start sending messages.{COLORS.DEFAULT}
-		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--alias{COLORS.DEFAULT}   : {COLORS.BOLD}Randomize accounts aliases.{COLORS.DEFAULT}
-		{COLORS.DODGER_BLUE_2 + COLORS.BOLD}--bounce{COLORS.DEFAULT}   : {COLORS.BOLD}Extract bounced emails from accounts.{COLORS.DEFAULT}
+		{COLORS.YELLOW + COLORS.BOLD}--login{COLORS.DEFAULT} : {COLORS.BOLD}Create chrome profiles and login to accounts.{COLORS.DEFAULT}
+		{COLORS.YELLOW + COLORS.BOLD}--filter{COLORS.DEFAULT} : {COLORS.BOLD}Create / Update account's inbox filter.{COLORS.DEFAULT}
+			{COLORS.DODGER_BLUE_2 + COLORS.BOLD}-f{COLORS.DEFAULT} : {COLORS.BOLD}From mail to accept inbox.{COLORS.DEFAULT}
+			{COLORS.DODGER_BLUE_2 + COLORS.BOLD}-b{COLORS.DEFAULT} : {COLORS.BOLD}Bounce email to social.{COLORS.DEFAULT}
+		{COLORS.YELLOW + COLORS.BOLD}--config{COLORS.DEFAULT} : {COLORS.BOLD}Create / Update account's config, including:{COLORS.DEFAULT}
+			{COLORS.DODGER_BLUE_2 + COLORS.BOLD}-a{COLORS.DEFAULT} : {COLORS.BOLD}From name.{COLORS.DEFAULT}
+			{COLORS.DODGER_BLUE_2 + COLORS.BOLD}-g{COLORS.DEFAULT} : {COLORS.BOLD}Language and conversation view.{COLORS.DEFAULT}
+		{COLORS.YELLOW + COLORS.BOLD}--send{COLORS.DEFAULT}   : {COLORS.BOLD}Start sending messages.{COLORS.DEFAULT}
+		{COLORS.YELLOW + COLORS.BOLD}--alias{COLORS.DEFAULT}   : {COLORS.BOLD}Randomize accounts aliases.{COLORS.DEFAULT}
+		{COLORS.YELLOW + COLORS.BOLD}--bounce{COLORS.DEFAULT}   : {COLORS.BOLD}Extract bounced emails from accounts.{COLORS.DEFAULT}
 	""")
 
 def args_error():
@@ -53,6 +55,22 @@ def get_args() -> int:
 	elif argc == 3:
 		if '--filter' in sys.argv and '--config' in sys.argv:
 			return ACTIONS.FILTER + ACTIONS.CONFIG
+		elif sys.argv[1] == '--config':
+			if sys.argv[2] == '-a':
+				return ACTIONS.CONFIG_ACCOUNT
+			elif sys.argv[2] == '-g':
+				return ACTIONS.CONFIG_GENERAL
+			else:
+				args_error()
+				return ACTIONS.ERROR
+		elif sys.argv[1] == '--filter':
+			if sys.argv[2] == '-f':
+				return ACTIONS.FILTER_FROM
+			elif sys.argv[2] == '-b':
+				return ACTIONS.FILTER_BOUNCE
+			else:
+				args_error()
+				return ACTIONS.ERROR
 		else:
 			args_error()
 			return ACTIONS.ERROR
