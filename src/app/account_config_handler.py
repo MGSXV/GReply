@@ -139,3 +139,21 @@ def accounts_group_config(accounts:list, browser: Chrome, timeout: int, from_nam
 		browser.switch_to.window(browser.window_handles[account.tab_index])
 		general_settings(browser, timeout, account.tab_index)
 		account_settings(browser, timeout, from_name, account.tab_index, num_of_accs)
+
+def accounts_group_account_settings(accounts:list, browser: Chrome, timeout: int, from_name: str):
+	num_of_accs = open_all_accounts(accounts, browser)
+	accs_list = get_active_accounts(accounts, browser)
+	if num_of_accs == 0:
+		return
+	for account in accs_list:
+		browser.switch_to.window(browser.window_handles[account.tab_index])
+		account_settings(browser, timeout, from_name, account.tab_index, num_of_accs)
+
+def accounts_group_general_settings(accounts:list, browser: Chrome, timeout: int):
+	num_of_accs = open_all_accounts(accounts, browser)
+	accs_list = get_active_accounts(accounts, browser)
+	if num_of_accs == 0:
+		return
+	for account in accs_list:
+		browser.switch_to.window(browser.window_handles[account.tab_index])
+		general_settings(browser, timeout, account.tab_index)

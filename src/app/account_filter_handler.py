@@ -127,7 +127,6 @@ def filter_handler(browser: Chrome, timeout: int, accepted_from: str, index: int
 		element = browser.find_element(By.XPATH, xpath[0])
 		element.click()
 		browser_handler.wait_time_in_range(2.0, 3.0)
-		bounce_handler(browser, timeout)
 	except Exception as e:
 		print(e)
 
@@ -139,7 +138,25 @@ def accounts_group_filter(accounts:list, browser: Chrome, timeout: int, from_nam
 	for account in accs_list:
 		browser.switch_to.window(browser.window_handles[account.tab_index])
 		filter_handler(browser, timeout, from_name, account.tab_index)
-	# filter_handler(browser, timeout, from_name, 0)
+		bounce_handler(browser, timeout)
+
+def accounts_group_filter_bounce(accounts:list, browser: Chrome, timeout: int):
+	num_of_accs = ach.open_all_accounts(accounts, browser)
+	accs_list = ach.get_active_accounts(accounts, browser)
+	if num_of_accs == 0:
+		return
+	for account in accs_list:
+		browser.switch_to.window(browser.window_handles[account.tab_index])
+		bounce_handler(browser, timeout)
+
+def accounts_group_filter_from(accounts:list, browser: Chrome, timeout: int, from_name: str):
+	num_of_accs = ach.open_all_accounts(accounts, browser)
+	accs_list = ach.get_active_accounts(accounts, browser)
+	if num_of_accs == 0:
+		return
+	for account in accs_list:
+		browser.switch_to.window(browser.window_handles[account.tab_index])
+		filter_handler(browser, timeout, from_name, account.tab_index)
 
 def accounts_group_filter_config(accounts:list, browser: Chrome, timeout: int, from_name: str, alias_name: str):
 	num_of_accs = ach.open_all_accounts(accounts, browser)
