@@ -9,6 +9,7 @@
 from init.init_globals import COLORS, ACTIONS
 from app import route
 import sys
+from sys import exit
 
 def print_help():
 	print(f"""
