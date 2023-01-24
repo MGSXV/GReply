@@ -54,7 +54,7 @@ def login(email: str, password: str, browser: Chrome, timeout: int, index: int) 
 		element.click()
 	except:
 		print('Error type email!')
-		Logger.logger(ERRORS.EMAIL_ERROR, email)
+		Logger.logger(ERRORS.EMAIL_ERROR, email, 'error_logs')
 		return False
 	browser_handler.wait_time_in_range(2.5, 3.5)
 	browser_handler.wait_for_element_by_id(browser, timeout, 'view_container')
@@ -69,12 +69,12 @@ def login(email: str, password: str, browser: Chrome, timeout: int, index: int) 
 		element.click()
 	except:
 		print('Error type password!')
-		Logger.logger(ERRORS.PASS_ERROR, email)
+		Logger.logger(ERRORS.PASS_ERROR, email, 'error_logs')
 		return False
 	browser_handler.wait_time_in_range(2.5, 4.5)
 	current_url = browser.current_url
 	if 'https://www.google.com/' != current_url:
-		Logger.logger(ERRORS.VERIFICATION_ERROR, email)
+		Logger.logger(ERRORS.VERIFICATION_ERROR, email, 'error_logs')
 		return False
 	return True
 	

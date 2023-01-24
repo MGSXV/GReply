@@ -18,7 +18,7 @@ class Logger():
 		timestamp += datetime.now().strftime("%H:%M:%S")
 		return timestamp
 
-	def logger(level: int, email: str):
+	def logger(level: int, email: str, logfile: str):
 		line = '[' + Logger.get_time_stamp() + '] '
 		if level == ERRORS.EMAIL_ERROR:
 			line += 'EMAIL_ERROR\t\t\t\t: invalid email address: (' + email + ')'
@@ -35,4 +35,4 @@ class Logger():
 		else:
 			line += 'Unknown error\t\t\t: (' + email + ')'
 		line += '\n'
-		file_hanlder.write_file(PATHS.STORAGE + PATHS.SEP + 'logs', line, 'a')
+		file_hanlder.write_file(PATHS.STORAGE + PATHS.SEP + logfile, line, 'a')
