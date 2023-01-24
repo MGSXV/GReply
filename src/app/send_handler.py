@@ -2,12 +2,9 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from modules.Account import Account
 from selenium.webdriver.common.action_chains import ActionChains
-from datetime import datetime
 from helpers import browser_handler
-from init.init_globals import PATHS, ERRORS
-from helpers.logs_handler import Logger
+from init.init_globals import PATHS
 
 def locate_email(browser: Chrome, timeout: int, accepted_from: str, xpath: str) -> WebElement or None:
 	try:
