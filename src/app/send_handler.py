@@ -75,7 +75,7 @@ def open_all_accounts(accounts: list, browser: Chrome, accepted_from: str):
 def get_active_accounts(accounts: list, browser: Chrome, timeout: int) -> list:
 	num_of_tabs = len(browser.window_handles)
 	accs = []
-	for i in range(num_of_tabs):
+	for i, handle in enumerate(browser.window_handles, start=0):
 		browser.switch_to.window(browser.window_handles[i])
 		for account in accounts:
 			if account.email.lower() in browser.title:
